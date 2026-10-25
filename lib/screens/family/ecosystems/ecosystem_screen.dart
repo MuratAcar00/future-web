@@ -7,7 +7,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../providers/device_provider.dart';
 import '../widgets/family_page.dart';
 
-// ── Platform data ────────────────────────────────────────────────────────────
+// ── Platform data ─────────────────────────────────────────────────────────────
 
 class _Platform {
   const _Platform({
@@ -137,7 +137,7 @@ const _categories = [
   ),
 ];
 
-// ── Screen ───────────────────────────────────────────────────────────────────
+// ── Screen ────────────────────────────────────────────────────────────────────
 
 class EcosystemScreen extends StatelessWidget {
   const EcosystemScreen({super.key});
@@ -158,82 +158,54 @@ class EcosystemScreen extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.xxl),
         for (final category in _categories) ...[
-          FamilySectionHeader(title: category.title),
-          const SizedBox(height: AppSpacing.md),
-          _PlatformGrid(platforms: category.platforms),
-          const SizedBox(height: AppSpacing.xxl),
+          _CategorySection(category: category),
+          const SizedBox(height: AppSpacing.xl),
         ],
       ],
     );
   }
 }
 
-// ── Responsive grid ──────────────────────────────────────────────────────────
+// ── Category section ──────────────────────────────────────────────────────────
 
-class _PlatformGrid extends StatelessWidget {
-  const _PlatformGrid({required this.platforms});
+class _CategorySection extends StatelessWidget {
+  const _CategorySection({required this.category});
 
-  final List<_Platform> platforms;
+  final _Category category;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // 1 column < 520px, 2 columns < 900px, 3 columns otherwise
-        final columns = constraints.maxWidth < 520
-            ? 1
-            : constraints.maxWidth < 900
-            ? 2
-            : 3;
-
-        if (columns == 1) {
-          return Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(category.title, style: AppTextStyles.section),
+        const SizedBox(height: AppSpacing.md),
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.background,
+            border: Border.all(color: AppColors.border),
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Column(
             children: [
-              for (final p in platforms) ...[
-                _PlatformCard(platform: p),
-                const SizedBox(height: AppSpacing.md),
+              for (var i = 0; i < category.platforms.length; i++) ...[
+                if (i > 0)
+                  const Divider(height: 1, indent: AppSpacing.lg, endIndent: AppSpacing.lg),
+                _PlatformRow(platform: category.platforms[i]),
               ],
             ],
-          );
-        }
-
-        // Build rows of `columns` cards each
-        final rows = <Widget>[];
-        for (var i = 0; i < platforms.length; i += columns) {
-          final slice = platforms.skip(i).take(columns).toList();
-          rows.add(
-            IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  for (var j = 0; j < slice.length; j++) ...[
-                    if (j > 0) const SizedBox(width: AppSpacing.md),
-                    Expanded(child: _PlatformCard(platform: slice[j])),
-                  ],
-                  // Fill empty slots in the last row
-                  for (var k = slice.length; k < columns; k++) ...[
-                    const SizedBox(width: AppSpacing.md),
-                    const Expanded(child: SizedBox()),
-                  ],
-                ],
-              ),
-            ),
-          );
-          if (i + columns < platforms.length) {
-            rows.add(const SizedBox(height: AppSpacing.md));
-          }
-        }
-
-        return Column(children: rows);
-      },
+          ),
+        ),
+      ],
     );
   }
 }
 
-// ── Platform card ─────────────────────────────────────────────────────────────
+// ── Platform row ──────────────────────────────────────────────────────────────
 
-class _PlatformCard extends StatelessWidget {
-  const _PlatformCard({required this.platform});
+class _PlatformRow extends StatelessWidget {
+  const _PlatformRow({required this.platform});
 
   final _Platform platform;
 
@@ -243,76 +215,61 @@ class _PlatformCard extends StatelessWidget {
     final linked = devices.linkedAccounts.contains(platform.id);
     final count = devices.importedDeviceCount(platform.id);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border(
-          top: BorderSide(color: AppColors.border),
-          right: BorderSide(color: AppColors.border),
-          bottom: BorderSide(color: AppColors.border),
-          left: BorderSide(color: platform.color, width: 3),
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.md,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      child: Row(
+        children: [
+          // Icon badge
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: platform.color.withValues(alpha: 20 / 255.0),
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              border: Border.all(
+                color: platform.color.withValues(alpha: 40 / 255.0),
+              ),
+            ),
+            child: Icon(platform.icon, color: platform.color, size: 22),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          // Name + protocol + description
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Colored icon badge
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: platform.color.withValues(alpha: 20 / 255.0),
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                  ),
-                  child: Icon(platform.icon, color: platform.color, size: 20),
+                Row(
+                  children: [
+                    Text(platform.name, style: AppTextStyles.bodyStrong),
+                    const SizedBox(width: AppSpacing.sm),
+                    _ProtocolChip(label: platform.protocol),
+                  ],
                 ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(platform.name, style: AppTextStyles.bodyStrong),
-                      const SizedBox(height: 2),
-                      _ProtocolTag(label: platform.protocol),
-                    ],
-                  ),
-                ),
-                if (linked)
-                  _LinkedBadge(deviceCount: count),
+                const SizedBox(height: 2),
+                Text(platform.description, style: AppTextStyles.secondary),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
-            Text(platform.description, style: AppTextStyles.secondary),
-            const SizedBox(height: AppSpacing.lg),
-            SizedBox(
-              width: double.infinity,
-              child: linked
-                  ? OutlinedButton.icon(
-                      icon: const Icon(Icons.link_off, size: 16),
-                      label: const Text('Bağlantıyı kes'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.muted,
-                      ),
-                      onPressed: () => _confirmUnlink(context, platform, devices),
-                    )
-                  : FilledButton.icon(
-                      icon: const Icon(Icons.link, size: 16),
-                      label: const Text('Bağla'),
-                      onPressed: () => _startOAuth(context, platform),
-                    ),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          // Action
+          linked
+              ? _LinkedBadge(
+                  deviceCount: count,
+                  onUnlink: () => _confirmUnlink(context, devices),
+                )
+              : FilledButton(
+                  onPressed: () => _startOAuth(context),
+                  child: const Text('Bağla'),
+                ),
+        ],
       ),
     );
   }
 
-  Future<void> _startOAuth(BuildContext context, _Platform platform) async {
+  Future<void> _startOAuth(BuildContext context) async {
     await showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -320,11 +277,7 @@ class _PlatformCard extends StatelessWidget {
     );
   }
 
-  Future<void> _confirmUnlink(
-    BuildContext context,
-    _Platform platform,
-    DeviceProvider devices,
-  ) async {
+  Future<void> _confirmUnlink(BuildContext context, DeviceProvider devices) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -350,66 +303,79 @@ class _PlatformCard extends StatelessWidget {
   }
 }
 
-// ── Linked badge ──────────────────────────────────────────────────────────────
+// ── Linked badge with unlink ──────────────────────────────────────────────────
 
 class _LinkedBadge extends StatelessWidget {
-  const _LinkedBadge({required this.deviceCount});
+  const _LinkedBadge({required this.deviceCount, required this.onUnlink});
 
   final int deviceCount;
+  final VoidCallback onUnlink;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: AppSpacing.xxs,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.successSurface,
-        borderRadius: BorderRadius.circular(AppRadius.sm),
-        border: Border.all(color: AppColors.successBorder),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.check_circle_outline, size: 12, color: AppColors.success),
-          const SizedBox(width: 4),
-          Text(
-            'Bağlı · $deviceCount cihaz',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.sm,
+            vertical: AppSpacing.xxs,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.successSurface,
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+            border: Border.all(color: AppColors.successBorder),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.check_circle_outline, size: 12, color: AppColors.success),
+              const SizedBox(width: 4),
+              Text(
+                'Bağlı · $deviceCount cihaz',
+                style: AppTextStyles.secondary.copyWith(
+                  color: AppColors.success,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 11,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 4),
+        GestureDetector(
+          onTap: onUnlink,
+          child: Text(
+            'Bağlantıyı kes',
             style: AppTextStyles.secondary.copyWith(
-              color: AppColors.success,
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
+              fontSize: 11,
+              color: AppColors.muted,
+              decoration: TextDecoration.underline,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
-// ── Protocol tag ──────────────────────────────────────────────────────────────
+// ── Protocol chip ─────────────────────────────────────────────────────────────
 
-class _ProtocolTag extends StatelessWidget {
-  const _ProtocolTag({required this.label});
+class _ProtocolChip extends StatelessWidget {
+  const _ProtocolChip({required this.label});
 
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.xs,
-        vertical: 1,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs, vertical: 1),
       decoration: BoxDecoration(
         color: AppColors.simulator,
         borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
-      child: Text(
-        label,
-        style: AppTextStyles.secondary.copyWith(fontSize: 11),
-      ),
+      child: Text(label, style: AppTextStyles.secondary.copyWith(fontSize: 10)),
     );
   }
 }
@@ -425,6 +391,8 @@ class _OAuthDialog extends StatefulWidget {
   State<_OAuthDialog> createState() => _OAuthDialogState();
 }
 
+enum _OAuthStep { connecting, done }
+
 class _OAuthDialogState extends State<_OAuthDialog> {
   _OAuthStep _step = _OAuthStep.connecting;
 
@@ -433,7 +401,6 @@ class _OAuthDialogState extends State<_OAuthDialog> {
     super.initState();
     final deviceProvider = context.read<DeviceProvider>();
     final platformId = widget.platform.id;
-    // Simulate OAuth round-trip: 2.2 s to connect, then show result
     Future.delayed(const Duration(milliseconds: 2200), () {
       if (!mounted) return;
       deviceProvider.linkAccount(platformId);
@@ -455,11 +422,7 @@ class _OAuthDialogState extends State<_OAuthDialog> {
               color: widget.platform.color.withValues(alpha: 20 / 255.0),
               borderRadius: BorderRadius.circular(AppRadius.sm),
             ),
-            child: Icon(
-              widget.platform.icon,
-              color: widget.platform.color,
-              size: 16,
-            ),
+            child: Icon(widget.platform.icon, color: widget.platform.color, size: 16),
           ),
           const SizedBox(width: AppSpacing.md),
           Text(widget.platform.name),
@@ -470,8 +433,8 @@ class _OAuthDialogState extends State<_OAuthDialog> {
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
           child: _step == _OAuthStep.connecting
-              ? _ConnectingBody(platformName: widget.platform.name)
-              : _DoneBody(deviceCount: count),
+              ? _ConnectingBody(key: const ValueKey('c'), platformName: widget.platform.name)
+              : _DoneBody(key: const ValueKey('d'), deviceCount: count),
         ),
       ),
       actions: [
@@ -485,17 +448,14 @@ class _OAuthDialogState extends State<_OAuthDialog> {
   }
 }
 
-enum _OAuthStep { connecting, done }
-
 class _ConnectingBody extends StatelessWidget {
-  const _ConnectingBody({required this.platformName});
+  const _ConnectingBody({super.key, required this.platformName});
 
   final String platformName;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      key: const ValueKey('connecting'),
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -513,31 +473,23 @@ class _ConnectingBody extends StatelessWidget {
 }
 
 class _DoneBody extends StatelessWidget {
-  const _DoneBody({required this.deviceCount});
+  const _DoneBody({super.key, required this.deviceCount});
 
   final int deviceCount;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      key: const ValueKey('done'),
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            const Icon(
-              Icons.check_circle_outline,
-              color: AppColors.success,
-              size: 20,
-            ),
+            const Icon(Icons.check_circle_outline, color: AppColors.success, size: 20),
             const SizedBox(width: AppSpacing.sm),
             const Text(
               'Bağlantı kuruldu!',
-              style: TextStyle(
-                color: AppColors.success,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(color: AppColors.success, fontWeight: FontWeight.w600),
             ),
           ],
         ),
