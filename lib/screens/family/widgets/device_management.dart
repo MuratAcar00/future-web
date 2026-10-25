@@ -71,7 +71,7 @@ class _DeviceAddMenuDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              'Edge Hub'a yeni bir cihaz eklemek için yöntem seçin.',
+              "Edge Hub'a yeni bir cihaz eklemek için yöntem seçin.",
               style: AppTextStyles.secondary,
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -88,7 +88,7 @@ class _DeviceAddMenuDialog extends StatelessWidget {
             _MethodCard(
               icon: Icons.radar,
               title: 'Otomatik tara',
-              subtitle: 'Yakındaki Zigbee sensörleri ve akıllı TV'leri keşfet.',
+              subtitle: "Yakındaki Zigbee sensörleri ve akıllı TV'leri keşfet.",
               onTap: () {
                 Navigator.pop(context);
                 showDiscoveryDialog(rootContext);
@@ -878,7 +878,7 @@ class DeviceManagementSection extends StatelessWidget {
           ),
           _DeviceActionRow(
             title: 'Cihazları tara',
-            subtitle: 'Zigbee sensörleri ve akıllı TV'leri keşfedin.',
+            subtitle: "Zigbee sensörleri ve akıllı TV'leri keşfedin.",
             actionLabel: 'Tara',
             onPressed: () => showDiscoveryDialog(context),
           ),
