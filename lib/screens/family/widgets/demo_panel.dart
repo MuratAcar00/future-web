@@ -15,6 +15,7 @@ import '../../../models/sensor_type.dart';
 import '../../../providers/clock_provider.dart';
 import '../../../providers/demo_provider.dart';
 import '../../../providers/routine_provider.dart';
+import '../../presentation/presentation_layer.dart';
 
 /// Developer / demo controls that drive the simulated scenarios.
 ///
@@ -148,6 +149,9 @@ class _DemoPanelBody extends StatelessWidget {
           'Senaryoları tetikleyerek aile panelindeki değişimleri test edin.',
           style: AppTextStyles.secondary,
         ),
+        const SizedBox(height: AppSpacing.xl),
+        const _GroupLabel('SUNUM'),
+        const StartPresentationButton(expand: true),
         const SizedBox(height: AppSpacing.xl),
         const _GroupLabel('SENSÖR SİMÜLASYONU'),
         _DemoButton(

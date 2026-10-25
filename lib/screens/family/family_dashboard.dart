@@ -6,7 +6,9 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/utils/motion.dart';
 import '../../models/app_mode.dart';
+import '../../models/presentation_step.dart';
 import '../../providers/app_mode_provider.dart';
+import '../presentation/presentation_highlight.dart';
 import 'profile/profile_screen.dart';
 import 'settings/settings_screen.dart';
 import 'widgets/activity_timeline.dart';
@@ -78,7 +80,10 @@ class FamilyDashboard extends StatelessWidget {
                     width: width >= AppBreakpoints.wide
                         ? AppLayout.demoPanelWidth
                         : AppLayout.demoPanelCompactWidth,
-                    child: const DemoPanel(),
+                    child: const PresentationHighlight(
+                      target: PresentationTarget.demoPanel,
+                      child: DemoPanel(),
+                    ),
                   ),
                 ],
               ],
@@ -105,24 +110,36 @@ class _HomeFeed extends StatelessWidget {
       children: [
         const FamilyHeader(),
         const SizedBox(height: AppSpacing.xl),
-        const RoutineBanner(),
+        const PresentationHighlight(
+          target: PresentationTarget.banner,
+          child: RoutineBanner(),
+        ),
         if (inlineDemoPanel) ...[
           const SizedBox(height: AppSpacing.xl),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: AppColors.simulator,
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-            ),
-            child: DemoPanel(
-              collapsible: true,
-              initiallyExpanded: demoPanelExpanded,
+          PresentationHighlight(
+            target: PresentationTarget.demoPanel,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: AppColors.simulator,
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+              child: DemoPanel(
+                collapsible: true,
+                initiallyExpanded: demoPanelExpanded,
+              ),
             ),
           ),
         ],
         const SizedBox(height: AppSpacing.xxl),
-        const SensorStatusOverview(),
+        const PresentationHighlight(
+          target: PresentationTarget.sensors,
+          child: SensorStatusOverview(),
+        ),
         const SizedBox(height: AppSpacing.xxl),
-        const ActivityTimeline(),
+        const PresentationHighlight(
+          target: PresentationTarget.timeline,
+          child: ActivityTimeline(),
+        ),
       ],
     );
   }
