@@ -7,6 +7,7 @@ import 'package:sessiz_komsu/models/sensor_event.dart';
 import 'package:sessiz_komsu/providers/app_mode_provider.dart';
 import 'package:sessiz_komsu/providers/clock_provider.dart';
 import 'package:sessiz_komsu/providers/demo_provider.dart';
+import 'package:sessiz_komsu/providers/device_provider.dart';
 import 'package:sessiz_komsu/providers/presentation_provider.dart';
 import 'package:sessiz_komsu/providers/routine_provider.dart';
 import 'package:sessiz_komsu/providers/sensor_provider.dart';
@@ -26,7 +27,13 @@ _Harness _harness() {
   final clock = ClockProvider(now: () => fixedNow, autoTick: false);
   final sensors = SensorProvider(initialTime: fixedNow);
   final routine = RoutineProvider(clock: clock, sensors: sensors);
-  final demo = DemoProvider(clock: clock, sensors: sensors, routine: routine);
+  final devices = DeviceProvider(clock: clock, sensors: sensors);
+  final demo = DemoProvider(
+    clock: clock,
+    sensors: sensors,
+    routine: routine,
+    devices: devices,
+  );
   final presentation = PresentationProvider(
     appMode: appMode,
     clock: clock,
@@ -36,6 +43,7 @@ _Harness _harness() {
   addTearDown(() {
     presentation.dispose();
     demo.dispose();
+    devices.dispose();
     routine.dispose();
     sensors.dispose();
     clock.dispose();

@@ -4,6 +4,7 @@ import '../core/utils/date_time_format.dart';
 import '../models/sensor_type.dart';
 import '../services/demo_sensor_service.dart';
 import 'clock_provider.dart';
+import 'device_provider.dart';
 import 'routine_provider.dart';
 import 'sensor_provider.dart';
 
@@ -14,12 +15,14 @@ class DemoProvider extends ChangeNotifier {
     required this._clock,
     required this._sensors,
     required this._routine,
+    required this._devices,
     this._service = const DemoSensorService(),
   });
 
   final ClockProvider _clock;
   final SensorProvider _sensors;
   final RoutineProvider _routine;
+  final DeviceProvider _devices;
   final DemoSensorService _service;
 
   String? _lastAction;
@@ -34,6 +37,20 @@ class DemoProvider extends ChangeNotifier {
       added
           ? '${type.name} tetiklendi (${TurkishDateFormat.time(now)}).'
           : '${type.name} bu dakika içinde zaten tetiklendi.',
+    );
+    return added;
+  }
+
+  /// Triggers an added device whose kind maps to a sensor.
+  bool triggerDevice(String id) {
+    final device = _devices.device(id);
+    if (device == null || !device.canTrigger) return false;
+    final now = _clock.currentTime;
+    final added = _devices.trigger(id);
+    _setLastAction(
+      added
+          ? '${device.name} tetiklendi (${TurkishDateFormat.time(now)}).'
+          : '${device.name} bu dakika içinde zaten tetiklendi.',
     );
     return added;
   }
@@ -81,10 +98,12 @@ class DemoProvider extends ChangeNotifier {
     return now.add(const Duration(days: 1)).atTimeOfDay(engine.lateMorning);
   }
 
-  /// Restores clock, sensors, routine and demo state to their initial values.
+  /// Restores clock, sensors, added devices, linked accounts, routine and
+  /// demo state to their initial values.
   void reset() {
     _routine.batch(() {
       _clock.resetDemoTime();
+      _devices.reset();
       _sensors.reset(_clock.currentTime);
       _routine.clearConfirmation();
     });

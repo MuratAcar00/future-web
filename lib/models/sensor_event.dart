@@ -10,7 +10,13 @@ enum EventKind {
   routineDelayed('Rutin'),
   confirmationRequested('Cihaz'),
   confirmed('Onay'),
-  demoScenario('Demo');
+  demoScenario('Demo'),
+
+  /// A trigger of a device added through the add-device flows.
+  deviceActivity('Cihaz'),
+
+  /// A device or cloud account was added or removed.
+  deviceSetup('Kurulum');
 
   const EventKind(this.tagLabel);
 
@@ -18,7 +24,10 @@ enum EventKind {
 
   /// Whether the event counts as daily-life activity for the routine engine.
   bool get isSensorActivity =>
-      this == kitchen || this == door || this == bedroom;
+      this == kitchen ||
+      this == door ||
+      this == bedroom ||
+      this == deviceActivity;
 
   static EventKind fromSensor(SensorType type) => switch (type) {
     SensorType.kitchen => kitchen,
@@ -57,6 +66,7 @@ class SensorEvent {
     this.severity = EventSeverity.info,
     this.isSimulated = true,
     this.sequence = 0,
+    this.tagOverride,
   });
 
   /// Deterministic id; the event log ignores duplicates with the same id.
@@ -71,6 +81,12 @@ class SensorEvent {
   /// Insertion order, used to keep ordering stable for equal timestamps.
   final int sequence;
 
+  /// Replaces [EventKind.tagLabel], e.g. with the room of an added device.
+  final String? tagOverride;
+
+  /// Short label shown next to the event.
+  String get tag => tagOverride ?? kind.tagLabel;
+
   SensorEvent withSequence(int value) => SensorEvent(
     id: id,
     kind: kind,
@@ -80,6 +96,7 @@ class SensorEvent {
     severity: severity,
     isSimulated: isSimulated,
     sequence: value,
+    tagOverride: tagOverride,
   );
 
   /// Newest-first ordering with insertion order as tie breaker.

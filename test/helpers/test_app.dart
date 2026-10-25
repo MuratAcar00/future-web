@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:sessiz_komsu/app.dart';
+import 'package:sessiz_komsu/services/device_pairing_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Saturday, 24 October 2026, 08:00 — deterministic "now" for every test.
@@ -16,7 +17,13 @@ class FakeClock {
   DateTime call() => now;
 }
 
-/// Pumps the full app at [size] with a frozen clock and no periodic timer.
+/// Simulated pairing without waits.
+const instantPairing = DevicePairingService(
+  delays: DevicePairingDelays.instant,
+);
+
+/// Pumps the full app at [size] with a frozen clock, no periodic timer and
+/// instant (simulated) device pairing.
 Future<void> pumpSessizKomsu(
   WidgetTester tester, {
   Size size = const Size(1440, 900),
@@ -26,7 +33,12 @@ Future<void> pumpSessizKomsu(
   setViewSize(tester, size);
   final time = now ?? fixedNow;
   await tester.pumpWidget(
-    SessizKomsuApp(preferences: preferences, now: () => time, autoTick: false),
+    SessizKomsuApp(
+      preferences: preferences,
+      now: () => time,
+      autoTick: false,
+      pairing: instantPairing,
+    ),
   );
   await tester.pump();
 }

@@ -32,9 +32,11 @@ Providers (providers/)                    Services (services/)
  SensorProvider   sensors + event log
  RoutineProvider  status from engine  ─────────▶ RoutineEngine
  DemoProvider     demo scenarios      ─────────▶ DemoSensorService
+ DeviceProvider   added devices/accounts ──────▶ DevicePairingService (simulated)
    │
    ▼
-Models (models/)  AppMode, SensorType, Sensor, SensorEvent, RoutineStatus
+Models (models/)  AppMode, SensorType, Sensor, SensorEvent, RoutineStatus,
+                  Device, DeviceCandidate, Room, CloudAccount
 ```
 
 - **ClockProvider** keeps real time and the demo offset apart (`realNow`,
@@ -48,7 +50,12 @@ Models (models/)  AppMode, SensorType, Sensor, SensorEvent, RoutineStatus
   `RoutineEngine` for the status. Widgets never decide the status. `batch()`
   groups several changes into a single evaluation.
 - **DemoProvider** runs the demo panel actions. Each one is idempotent, and
-  reset restores clock, sensors, routine and demo state.
+  reset restores clock, sensors, added devices, routine and demo state.
+- **DeviceProvider** holds devices added through **Cihaz Ekle** and linked
+  cloud accounts. Devices are de-duplicated by hardware id; adding, removing,
+  linking and unlinking log timeline events. `DevicePairingService` simulates
+  QR codes, discovery and account linking with deterministic sample data and
+  injectable delays (no camera, Bluetooth, Wi-Fi, Zigbee or OAuth).
 
 ### Routine rules (`RoutineEngine`)
 
@@ -71,11 +78,13 @@ lib/
   core/theme/                    AppColors, AppSpacing/AppRadius, AppTheme
   core/utils/                    Turkish date formatting, reduced-motion helper
   core/widgets/                  HoverSurface, LogoMark, StatusDot, TagChip, reset dialog
-  models/                        app_mode, sensor_type, sensor, sensor_event, routine_status
-  providers/                     app_mode, clock, sensor, routine, demo
-  services/                      routine_engine, demo_sensor_service
+  models/                        app_mode, sensor_type, sensor, sensor_event, routine_status,
+                                 device, cloud_account
+  providers/                     app_mode, clock, sensor, routine, demo, device
+  services/                      routine_engine, demo_sensor_service, device_pairing_service
   screens/onboarding/            mode selection
   screens/device/                black clock screen + İYİYİM prompt
+  screens/devices/               Cihaz Ekle sheet: QR, scan and cloud flows
   screens/family/                dashboard shell
     widgets/                     sidebar/bottom nav, header, banner, sensors,
                                  timeline (AnimatedList), timeline item, empty state, demo panel
@@ -118,7 +127,20 @@ flutter build web --release    # output: build/web
      and raises the alert in one click: red banner, timeline events, and
      İYİYİM on the device screen. It is disabled while an alert is active.
    - **Demo'yu Sıfırla** asks for confirmation, then resets all providers.
-4. Open device mode (sidebar tablet icon) and press **İYİYİM**, by click,
+4. **Cihaz Ekle** (Sensörler header, or Ayarlar → Cihazlar) adds simulated
+   devices. Every screen says "Demo: gerçek bağlantı kurulmaz."
+   - **QR Kod ile Cihaz Ekle**: no camera. **Demo QR okut** resolves a sample
+     device, or type a setup code (`SK-XXXX-XXXX`). Then pick a room and name.
+   - **Cihazları Tara**: Zigbee/Wi-Fi devices appear one by one; select,
+     assign rooms, add. Already added devices are not listed again.
+   - **Hesap Bağla**: Google Home, Amazon Alexa, Bosch Smart Home or
+     SmartThings (text labels, generic icons). The consent screen lists the
+     shared event types; no audio or video. **Bağlantıyı kaldır** removes the
+     imported devices.
+   Door, motion and plug devices get a trigger button in the demo panel and
+   count as routine activity. Ayarlar → Cihazlar renames, moves or removes
+   them. Demo reset and Sunum Modu restore the three default sensors.
+5. Open device mode (sidebar tablet icon) and press **İYİYİM**, by click,
    touch, Enter or Space. The confirmation shows up in the family timeline
    and the banner reads "Ayşe Hanım iyi olduğunu doğruladı."
 
@@ -135,6 +157,7 @@ flutter build web --release    # output: build/web
 ## Limitations / not included
 
 - No real sensor hardware, no backend or database, no authentication.
+  Device pairing (QR, discovery, cloud accounts) is simulated.
 - No push notifications, SMS or calls. Alerts exist only inside this app.
 - Demo state lives in memory; only the selected mode is persisted.
 - One resident and one home; the routine thresholds are fixed in code.

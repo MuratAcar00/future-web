@@ -51,7 +51,7 @@ class RoutineEngine {
         status: RoutineStatus.normal,
         hasActivityToday: true,
         reason:
-            'Son hareket: ${activity.kind.tagLabel} · '
+            'Son hareket: ${activity.tag} · '
             '${TurkishDateFormat.time(activity.timestamp)}',
       );
     }

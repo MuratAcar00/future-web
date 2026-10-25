@@ -1,4 +1,6 @@
 import '../core/utils/date_time_format.dart';
+import '../models/cloud_account.dart';
+import '../models/device.dart';
 import '../models/sensor_event.dart';
 import '../models/sensor_type.dart';
 
@@ -114,5 +116,68 @@ class DemoSensorService {
     description: 'Cihaz ekranındaki İYİYİM butonuna basıldı; uyarı kapatıldı.',
     timestamp: at,
     severity: EventSeverity.success,
+  );
+
+  /// Trigger of an added device. One event per device per minute.
+  SensorEvent deviceActivity(Device device, DateTime at) => SensorEvent(
+    id: 'device-${device.id}-${TurkishDateFormat.stamp(at)}',
+    kind: EventKind.deviceActivity,
+    title: '${device.name}: ${device.kind.triggeredState ?? 'olay'}.',
+    description:
+        '${device.room.label} · eklenen cihaz için simüle edilmiş olay '
+        'oluşturuldu.',
+    timestamp: at,
+    tagOverride: device.room.label,
+  );
+
+  /// [sequence] keeps add → remove → add within one minute distinct.
+  SensorEvent deviceAdded(Device device, DateTime at, int sequence) =>
+      SensorEvent(
+        id: 'device-added-${device.id}-$sequence',
+        kind: EventKind.deviceSetup,
+        title: 'Yeni cihaz eklendi: ${device.name}',
+        description:
+            '${device.room.label} · ${device.protocol.label} · '
+            '${device.sourceLabel} ile eklendi. Demo: gerçek bağlantı '
+            'kurulmaz.',
+        timestamp: at,
+      );
+
+  SensorEvent deviceRemoved(Device device, DateTime at, int sequence) =>
+      SensorEvent(
+        id: 'device-removed-${device.id}-$sequence',
+        kind: EventKind.deviceSetup,
+        title: 'Cihaz kaldırıldı: ${device.name}',
+        description:
+            '${device.room.label} odasındaki cihaz listeden çıkarıldı.',
+        timestamp: at,
+      );
+
+  SensorEvent accountLinked(
+    CloudProvider provider,
+    int deviceCount,
+    DateTime at,
+    int sequence,
+  ) => SensorEvent(
+    id: 'account-linked-${provider.name}-$sequence',
+    kind: EventKind.deviceSetup,
+    title: 'Hesap bağlandı: ${provider.label}',
+    description:
+        '$deviceCount cihaz içe aktarıldı. Yalnızca olay türleri paylaşılır; '
+        'ses veya görüntü yok (simülasyon).',
+    timestamp: at,
+  );
+
+  SensorEvent accountUnlinked(
+    CloudProvider provider,
+    int deviceCount,
+    DateTime at,
+    int sequence,
+  ) => SensorEvent(
+    id: 'account-unlinked-${provider.name}-$sequence',
+    kind: EventKind.deviceSetup,
+    title: 'Hesap bağlantısı kaldırıldı: ${provider.label}',
+    description: 'İçe aktarılan $deviceCount cihaz kaldırıldı.',
+    timestamp: at,
   );
 }

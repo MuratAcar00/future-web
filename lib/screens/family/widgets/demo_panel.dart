@@ -10,11 +10,14 @@ import '../../../core/utils/motion.dart';
 import '../../../core/widgets/hover_surface.dart';
 import '../../../core/widgets/reset_demo_dialog.dart';
 import '../../../core/widgets/tag_chip.dart';
+import '../../../models/device.dart';
 import '../../../models/routine_status.dart';
 import '../../../models/sensor_type.dart';
 import '../../../providers/clock_provider.dart';
 import '../../../providers/demo_provider.dart';
+import '../../../providers/device_provider.dart';
 import '../../../providers/routine_provider.dart';
+import '../../devices/device_visuals.dart';
 import '../../presentation/presentation_layer.dart';
 
 /// Developer / demo controls that drive the simulated scenarios.
@@ -122,6 +125,9 @@ class _DemoPanelBody extends StatelessWidget {
     final demoTime = context.select<ClockProvider, bool>(
       (c) => c.isDemoTimeActive,
     );
+    final devices = context.select<DeviceProvider, List<Device>>(
+      (p) => p.devices,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -169,6 +175,13 @@ class _DemoPanelBody extends StatelessWidget {
           label: 'Yatak Odası Hareketi',
           onTap: () => demo.triggerSensor(SensorType.bedroom),
         ),
+        for (final device in devices)
+          if (device.canTrigger)
+            _DemoButton(
+              icon: device.kind.icon,
+              label: '${device.name} (${device.room.label})',
+              onTap: () => demo.triggerDevice(device.id),
+            ),
         const SizedBox(height: AppSpacing.xl),
         const _GroupLabel('ZAMAN'),
         Padding(

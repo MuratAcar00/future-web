@@ -10,6 +10,7 @@ import 'models/app_mode.dart';
 import 'providers/app_mode_provider.dart';
 import 'providers/clock_provider.dart';
 import 'providers/demo_provider.dart';
+import 'providers/device_provider.dart';
 import 'providers/presentation_provider.dart';
 import 'providers/routine_provider.dart';
 import 'providers/sensor_provider.dart';
@@ -17,6 +18,7 @@ import 'screens/device/device_screen.dart';
 import 'screens/family/family_dashboard.dart';
 import 'screens/onboarding/onboarding_screen.dart';
 import 'screens/presentation/presentation_layer.dart';
+import 'services/device_pairing_service.dart';
 
 class SessizKomsuApp extends StatelessWidget {
   const SessizKomsuApp({
@@ -24,6 +26,7 @@ class SessizKomsuApp extends StatelessWidget {
     this.preferences,
     this.now,
     this.autoTick = true,
+    this.pairing = const DevicePairingService(),
   });
 
   /// Persists the selected mode; null disables persistence.
@@ -34,6 +37,9 @@ class SessizKomsuApp extends StatelessWidget {
 
   /// Disable the periodic clock timer in tests.
   final bool autoTick;
+
+  /// Simulated pairing; tests inject instant delays.
+  final DevicePairingService pairing;
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +68,19 @@ class SessizKomsuApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           lazy: false,
+          create: (context) => DeviceProvider(
+            clock: context.read<ClockProvider>(),
+            sensors: context.read<SensorProvider>(),
+            pairing: pairing,
+          ),
+        ),
+        ChangeNotifierProvider(
+          lazy: false,
           create: (context) => DemoProvider(
             clock: context.read<ClockProvider>(),
             sensors: context.read<SensorProvider>(),
             routine: context.read<RoutineProvider>(),
+            devices: context.read<DeviceProvider>(),
           ),
         ),
         ChangeNotifierProvider(

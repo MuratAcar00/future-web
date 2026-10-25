@@ -101,28 +101,51 @@ class FamilyCard extends StatelessWidget {
 
 /// Section heading with optional trailing caption.
 class FamilySectionHeader extends StatelessWidget {
-  const FamilySectionHeader({super.key, required this.title, this.caption});
+  const FamilySectionHeader({
+    super.key,
+    required this.title,
+    this.caption,
+    this.trailing,
+  });
 
   final String title;
   final String? caption;
 
+  /// Optional action at the end, e.g. an add button. With a trailing
+  /// action the caption moves below the title so narrow screens fit.
+  final Widget? trailing;
+
   @override
   Widget build(BuildContext context) {
     final caption = this.caption;
+    final trailing = this.trailing;
+    final heading = Semantics(
+      header: true,
+      child: Text(title, style: AppTextStyles.section),
+    );
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Expanded(
-            child: Semantics(
-              header: true,
-              child: Text(title, style: AppTextStyles.section),
-            ),
+            child: trailing != null && caption != null
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      heading,
+                      Text(caption, style: AppTextStyles.secondary),
+                    ],
+                  )
+                : heading,
           ),
-          if (caption != null) ...[
+          if (caption != null && trailing == null) ...[
             const SizedBox(width: AppSpacing.md),
             Text(caption, style: AppTextStyles.secondary),
+          ],
+          if (trailing != null) ...[
+            const SizedBox(width: AppSpacing.sm),
+            trailing,
           ],
         ],
       ),

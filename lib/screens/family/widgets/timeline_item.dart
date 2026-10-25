@@ -100,7 +100,7 @@ class TimelineItem extends StatelessWidget {
                         spacing: AppSpacing.xs,
                         runSpacing: AppSpacing.xs,
                         children: [
-                          TagChip(label: event.kind.tagLabel),
+                          TagChip(label: event.tag),
                           if (event.severity == EventSeverity.alert)
                             const TagChip.alert(label: 'Uyarı'),
                           if (event.severity == EventSeverity.success)
