@@ -18,22 +18,31 @@
 
 ## Ekran Görüntüleri
 
-### Aile paneli ve cihaz yönetimi
+### İlk açılış
+
+<p align="center">
+  <img src="docs/screenshots/onboarding.png" width="80%" alt="Aile paneli ve cihaz modu seçim ekranı">
+</p>
+
+### Aile paneli ve ayarlar
 
 <p align="center">
   <img src="docs/screenshots/family-dashboard.png" width="49%" alt="Aile panelinde günlük durum, sensörler ve etkinlik akışı">
   <img src="docs/screenshots/settings-devices.png" width="49%" alt="Ayarlar sayfasında cihaz ekleme yöntemleri">
 </p>
 
-### Profil ve cihaz modu
+### Profil ve gecikme uyarısı
 
 <p align="center">
   <img src="docs/screenshots/profile.png" width="49%" alt="Takip edilen kişi ve aile hesabı profili">
-  <img src="docs/screenshots/device-alert.png" width="49%" alt="Rutin gecikmesinde görünen İYİYİM onay ekranı">
+  <img src="docs/screenshots/family-alert.png" width="49%" alt="Aile panelinde rutin gecikme uyarısı">
 </p>
 
+### Cihaz ekranı
+
 <p align="center">
-  <img src="docs/screenshots/device-confirmed.png" width="80%" alt="Onay verildikten sonra cihaz ekranında görünen durum">
+  <img src="docs/screenshots/device-clock.png" width="49%" alt="Cihaz modunda saat ekranı">
+  <img src="docs/screenshots/device-confirmation.png" width="49%" alt="Cihaz modunda İYİYİM onay düğmesi">
 </p>
 
 ## Başlangıç
