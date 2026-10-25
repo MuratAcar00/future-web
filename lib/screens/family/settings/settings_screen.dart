@@ -78,7 +78,7 @@ class SettingsScreen extends StatelessWidget {
         FamilyCard(
           children: [
             _InfoRow(
-              title: 'Sabah hareket penceresi',
+              title: 'Sabah rutin penceresi',
               value:
                   '${TurkishDateFormat.timeOfDay(engine.windowStart)} – '
                   '${TurkishDateFormat.timeOfDay(engine.delayAfter)}',

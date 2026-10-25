@@ -58,20 +58,20 @@ class DeviceProvider extends ChangeNotifier {
       ],
       'Bosch Smart Home' => const [
         ConnectedDevice(
-          id: 'bosch-hall-motion',
-          name: 'Koridor hareket sensörü',
-          category: 'Hareket sensörü',
-          room: 'Koridor',
+          id: 'bosch-entry-door',
+          name: 'Giriş kapı sensörü',
+          category: 'Kapı sensörü',
+          room: 'Giriş',
           method: DeviceConnectionMethod.cloud,
           provider: 'Bosch Smart Home',
         ),
       ],
       'SmartThings' => const [
         ConnectedDevice(
-          id: 'smartthings-bedroom-sensor',
-          name: 'Yatak odası sensörü',
-          category: 'Sensör',
-          room: 'Yatak odası',
+          id: 'smartthings-kitchen-leak',
+          name: 'Mutfak su kaçağı sensörü',
+          category: 'Su kaçağı sensörü',
+          room: 'Mutfak',
           method: DeviceConnectionMethod.cloud,
           provider: 'SmartThings',
         ),

@@ -24,15 +24,15 @@ class DemoSensorService {
 
     return [
       _seed(
-        SensorType.kitchen,
+        SensorType.fridge,
         previous.add(const Duration(hours: 21, minutes: 45)),
       ),
       _seed(
-        SensorType.bedroom,
+        SensorType.livingRoomLight,
         previous.add(const Duration(hours: 22, minutes: 18)),
       ),
       _seed(
-        SensorType.bedroom,
+        SensorType.entrance,
         anchor.add(const Duration(hours: 7, minutes: 12)),
       ),
       _seed(
@@ -58,15 +58,19 @@ class DemoSensorService {
     final (title, description) = switch (type) {
       SensorType.kitchen => (
         'Mutfak sensörü tetiklendi.',
-        'Mutfak kullanımına ilişkin simüle edilmiş aktivite algılandı.',
+        'Mutfak prizinin açılma zamanı simüle edildi; görüntü veya ses alınmaz.',
       ),
       SensorType.entrance => (
         'Dış kapı açıldı.',
-        'Dış kapı sensörü için demo olayı oluşturuldu.',
+        'Yalnızca kapının açılma zamanı simüle edilir; kişi tanıma yapılmaz.',
       ),
-      SensorType.bedroom => (
-        'Yatak odasında hareket algılandı.',
-        'Yatak odası hareket sensörü simülasyonu çalıştı.',
+      SensorType.fridge => (
+        'Buzdolabı kapağı açıldı.',
+        'Kapağın açılma zamanı simüle edilir; içerik veya kişi belirlenmez.',
+      ),
+      SensorType.livingRoomLight => (
+        'Salon ışığı açıldı.',
+        'Işığın açılma zamanı simüle edilir; görüntü veya hareket verisi alınmaz.',
       ),
     };
     return SensorEvent(
@@ -84,7 +88,7 @@ class DemoSensorService {
     title: 'Uyarı senaryosu başlatıldı.',
     description:
         'Demo saati ${TurkishDateFormat.time(at)} olarak ayarlandı; bu sabah '
-        'için sensör hareketi yok.',
+        'için aktivite olayı kaydedilmedi.',
     timestamp: at,
   );
 
@@ -92,8 +96,7 @@ class DemoSensorService {
     id: 'routine-delayed-${TurkishDateFormat.dayStamp(at)}',
     kind: EventKind.routineDelayed,
     title: 'Sabah rutini gecikti.',
-    description:
-        'Beklenen saatte sabah hareketi algılanmadı. Lütfen kontrol edin.',
+    description: 'Beklenen saate kadar simüle aktivite olayı kaydedilmedi. Lütfen kontrol edin.',
     timestamp: at,
     severity: EventSeverity.alert,
   );

@@ -51,7 +51,7 @@ class RoutineEngine {
         status: RoutineStatus.normal,
         hasActivityToday: true,
         reason:
-            'Son hareket: ${activity.kind.tagLabel} · '
+            'Son aktivite: ${activity.kind.tagLabel} · '
             '${TurkishDateFormat.time(activity.timestamp)}',
       );
     }
@@ -64,7 +64,7 @@ class RoutineEngine {
       return RoutineEvaluation(
         status: RoutineStatus.normal,
         reason:
-            'Bugün henüz hareket yok. Sabah hareketi için beklenen son '
+            'Bugün henüz aktivite olayı yok. Rutin için beklenen son '
             'saat: $delayLabel.',
       );
     }
@@ -72,14 +72,14 @@ class RoutineEngine {
       return RoutineEvaluation(
         status: RoutineStatus.delayed,
         reason:
-            'Saat $windowLabel sonrası hareket algılanmadı. Cihazdan onay '
+            'Saat $windowLabel sonrasında aktivite olayı kaydedilmedi. Cihazdan onay '
             'isteği: $confirmLabel.',
       );
     }
     return RoutineEvaluation(
       status: RoutineStatus.awaitingConfirmation,
       reason:
-          'Saat $windowLabel sonrası hareket algılanmadı. Cihaz ekranında '
+          'Saat $windowLabel sonrasında aktivite olayı kaydedilmedi. Cihaz ekranında '
           'İYİYİM onayı bekleniyor.',
     );
   }

@@ -84,15 +84,14 @@ final presentationSteps = <PresentationStep>[
   PresentationStep(
     title: 'Sabah rutini başlıyor',
     description:
-        'Yatak odasında hareket, mutfak prizi, dış kapı: sensör olayları '
-        'sırayla akışa düşer ve durum normal kalır.',
+        'Mutfak prizi, buzdolabı kapağı, salon ışığı ve dış kapı gibi sınırlı '
+        'sinyaller zaman çizelgesine düşer. Yatak odası hareketi izlenmez.',
     focus: const {PresentationTarget.sensors, PresentationTarget.timeline},
-    duration: const Duration(seconds: 7),
+    duration: const Duration(seconds: 8),
     beats: [
       PresentationBeat(Duration.zero, (s) => s.showFamily()),
       PresentationBeat(_beat, (s) {
         s.setTime(0, 7, 5);
-        s.triggerSensor(SensorType.bedroom);
       }),
       PresentationBeat(_beat * 2, (s) {
         s.setTime(0, 7, 24);
@@ -100,14 +99,22 @@ final presentationSteps = <PresentationStep>[
       }),
       PresentationBeat(_beat * 3, (s) {
         s.setTime(0, 7, 41);
+        s.triggerSensor(SensorType.fridge);
+      }),
+      PresentationBeat(_beat * 4, (s) {
+        s.setTime(0, 7, 52);
         s.triggerSensor(SensorType.entrance);
+      }),
+      PresentationBeat(_beat * 5, (s) {
+        s.setTime(0, 7, 58);
+        s.triggerSensor(SensorType.livingRoomLight);
       }),
     ],
   ),
   PresentationStep(
     title: 'Rutin gecikirse',
     description:
-        'Ertesi sabah hiç hareket yok. 09:00’dan sonra rutin gecikmiş '
+        'Ertesi sabah aktivite olayı kaydedilmez. 09:00’dan sonra rutin gecikmiş '
         'sayılır; 09:30’dan sonra aile paneli kırmızı uyarı verir.',
     focus: const {PresentationTarget.banner},
     duration: const Duration(seconds: 7),

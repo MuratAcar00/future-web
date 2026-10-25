@@ -84,7 +84,7 @@ void main() {
 
       expect(h.routine.status, RoutineStatus.normal);
       expect(h.routine.evaluation.hasActivityToday, isTrue);
-      expect(h.routine.evaluation.reason, 'Son hareket: Mutfak · 07:30');
+      expect(h.routine.evaluation.reason, 'Son aktivite: Mutfak · 07:30');
     });
 
     test('is normal but waiting before 09:00 without activity', () {

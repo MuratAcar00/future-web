@@ -1,6 +1,6 @@
 # Sessiz Komşu
 
-**Yaşlı bireylerin günlük rutinini destekleyen, gizliliği önceleyen Flutter Web prototipi.** Aile paneli simüle sensör hareketlerini ve rutin durumunu gösterir; cihaz ekranı ise büyük saat ve gerektiğinde tek dokunuşla **İYİYİM** onayı sunar.
+**Yaşlı bireylerin günlük rutinini destekleyen, gizliliği önceleyen Flutter Web prototipi.** Aile paneli mutfak prizi, buzdolabı kapağı, salon ışığı ve dış kapı gibi sınırlı, simüle olayları ve rutin durumunu gösterir; yatak odası hareketi izlenmez. Cihaz ekranı büyük saat ve gerektiğinde tek dokunuşla **İYİYİM** onayı sunar.
 
 > [!IMPORTANT]
 > **Bu uygulama bir demodur.** Gerçek sensör, kamera, mikrofon, konum, bulut hesabı, sunucu veya bildirim bağlantısı yoktur. Veriler tarayıcıda simüle edilir. Uygulama sağlık değerlendirmesi yapmaz; yalnızca rutin zamanlamasını gösterir.
@@ -12,6 +12,7 @@
 - **Cihaz ekleme demosu:** `SK-XXXX-XXXX` koduyla yerel Wi-Fi/Bluetooth cihazı ekleme, Zigbee sensörü veya akıllı TV tarama, Google Home / Amazon Alexa / Bosch Smart Home / SmartThings hesaplarını simüle bağlama.
 - **Sunum modu:** yedi adımlı, uygulamanın gerçek durumunu kullanan rehberli demo.
 - **Gizlilik:** kamera, mikrofon veya konum izni istenmez. Gerçek hesap bilgisi toplanmaz.
+- **Sinyal kapsamı:** demo mutfak prizi, buzdolabı kapağı, salon ışığı ve dış kapı olaylarını kullanır; yatak odası hareket sensörü yoktur.
 - **Erişilebilirlik:** klavye kullanımı, görünür odak halkası, anlamlı etiketler ve azaltılmış hareket tercihi.
 
 ## Ekran Görüntüleri
@@ -64,13 +65,23 @@ flutter build web --release
 python -m http.server 8080 --directory build/web
 ```
 
-## Demo akışı
+## Simülasyon ve demo akışı
 
 1. **Yakınım İçin — Aile Paneli** veya **Benim İçin — Cihaz Modu** seçin. Seçim tarayıcıda hatırlanır; demo verileri saklanmaz.
 2. Aile panelinde sensör satırlarını veya **Cihaz ekle** düğmesini kullanın. QR eşleştirme, cihaz keşfi ve hesap bağlantıları örnek verilerle simüle edilir.
 3. Sağdaki **Geliştirici / Demo Kontrolleri** panelinden sensör olayı oluşturun, demo saatini ilerletin veya uyarı senaryosunu başlatın.
 4. Cihaz moduna geçerek **İYİYİM** onayının aile panelindeki duruma yansımasını görün.
 5. **Demo'yu Sıfırla** olayları, demo saatini, eklenen cihazları ve bağlantı durumlarını temizler. Sunum modu bitince de demo temiz duruma döner.
+
+### Simülasyonda kullanılan sinyaller
+
+- **Mutfak prizi:** yalnızca prizin açılma zamanı örneklenir.
+- **Buzdolabı kapağı:** yalnızca kapağın açılma zamanı kaydedilir.
+- **Salon ışığı:** yalnızca ışığın açılma zamanı kaydedilir.
+- **Dış kapı:** kapının açılma olayı kaydedilir; kişi tanıma veya görüntüleme yapılmaz.
+- **Rutin durumu:** demo saati ve bu dört olayın zamanına göre hesaplanır.
+- **Yatak odası hareketi:** izlenmez ve simülasyonda sensörü yoktur.
+- **Kamera, mikrofon ve konum:** kullanılmaz. Olaylar tarayıcı belleğinde kalır ve sıfırlamayla temizlenir.
 
 ## Rutin kuralları
 

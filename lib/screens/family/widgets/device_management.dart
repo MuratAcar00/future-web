@@ -254,10 +254,10 @@ class _QrDeviceDialogState extends State<_QrDeviceDialog> {
 
 const _discovered = [
   ConnectedDevice(
-    id: 'scan-zigbee-motion',
-    name: 'Zigbee hareket sensörü',
-    category: 'Zigbee sensörü',
-    room: 'Giriş',
+    id: 'scan-zigbee-leak',
+    name: 'Zigbee su kaçağı sensörü',
+    category: 'Su kaçağı sensörü',
+    room: 'Mutfak',
     method: DeviceConnectionMethod.discovery,
   ),
   ConnectedDevice(

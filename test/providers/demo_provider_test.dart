@@ -36,8 +36,8 @@ void main() {
     test('sensor buttons add events and ignore same-minute repeats', () {
       final h = _harness();
 
-      expect(h.demo.triggerSensor(SensorType.bedroom), isTrue);
-      expect(h.demo.triggerSensor(SensorType.bedroom), isFalse);
+      expect(h.demo.triggerSensor(SensorType.entrance), isTrue);
+      expect(h.demo.triggerSensor(SensorType.entrance), isFalse);
 
       expect(h.sensors.events, hasLength(5));
       expect(h.demo.lastAction, contains('zaten tetiklendi'));

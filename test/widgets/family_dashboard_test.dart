@@ -65,7 +65,9 @@ void main() {
 
     expect(find.text('Dış kapı açıldı.'), findsOneWidget);
     expect(
-      find.text('Dış kapı sensörü için demo olayı oluşturuldu.'),
+      find.text(
+        'Yalnızca kapının açılma zamanı simüle edilir; kişi tanıma yapılmaz.',
+      ),
       findsOneWidget,
     );
     expect(find.byType(TimelineItem), findsNWidgets(5));
@@ -101,7 +103,7 @@ void main() {
 
   testWidgets('reset asks for confirmation; cancel keeps data', (tester) async {
     await _pumpFamily(tester);
-    await tapAndSettle(tester, find.text('Yatak Odası Hareketi'));
+    await tapAndSettle(tester, find.text('Dış Kapı Sensörü'));
     expect(find.byType(TimelineItem), findsNWidgets(5));
 
     await tapAndSettle(tester, find.text(AppStrings.resetDemo));
