@@ -27,113 +27,63 @@ class _Platform {
   final IconData icon;
 }
 
-class _Category {
-  const _Category({required this.title, required this.platforms});
 
-  final String title;
-  final List<_Platform> platforms;
-}
-
-const _categories = [
-  _Category(
-    title: 'Sesli Asistan',
-    platforms: [
-      _Platform(
-        id: 'Amazon Alexa',
-        name: 'Amazon Alexa',
-        protocol: 'Matter · Cloud API',
-        description: 'Echo cihazlarını ve bağlı akıllı ev ekipmanlarını içe aktar.',
-        color: Color(0xFF00CAFF),
-        icon: Icons.record_voice_over_outlined,
-      ),
-      _Platform(
-        id: 'Google Home',
-        name: 'Google Home',
-        protocol: 'Matter · Cloud API',
-        description: 'Nest cihazları, termostat ve bağlı prizleri içe aktar.',
-        color: Color(0xFF4285F4),
-        icon: Icons.home_outlined,
-      ),
-      _Platform(
-        id: 'Apple HomeKit',
-        name: 'Apple HomeKit',
-        protocol: 'Matter · HomeKit',
-        description: 'HomeKit aksesuarlarını ve sahneleri içe aktar.',
-        color: Color(0xFF555555),
-        icon: Icons.phone_iphone_outlined,
-      ),
-    ],
+const _platforms = [
+  _Platform(
+    id: 'Amazon Alexa',
+    name: 'Amazon Alexa',
+    protocol: 'Cloud API',
+    description: 'Echo cihazlarına bağlı akıllı ev ekipmanlarını içe aktar.',
+    color: Color(0xFF00CAFF),
+    icon: Icons.record_voice_over_outlined,
   ),
-  _Category(
-    title: 'Avrupa / Endüstriyel',
-    platforms: [
-      _Platform(
-        id: 'Siemens KNX',
-        name: 'Siemens KNX',
-        protocol: 'KNX / IP',
-        description: 'Binalardaki KNX aktüatör, ışık ve ısıtma sistemlerini bağla.',
-        color: Color(0xFF009999),
-        icon: Icons.settings_input_component_outlined,
-      ),
-      _Platform(
-        id: 'Bosch Smart Home',
-        name: 'Bosch Smart Home',
-        protocol: 'Cloud API',
-        description: 'Kontak, hareket ve pencere sensörlerini içe aktar.',
-        color: Color(0xFF00479B),
-        icon: Icons.sensors_outlined,
-      ),
-      _Platform(
-        id: 'Somfy',
-        name: 'Somfy TaHoma',
-        protocol: 'io-homecontrol · TaHoma API',
-        description: 'Motorlu perdeler, jaluzi ve güneşlik kontrollerini bağla.',
-        color: Color(0xFFE64A19),
-        icon: Icons.blinds_outlined,
-      ),
-    ],
+  _Platform(
+    id: 'Google Home',
+    name: 'Google Home',
+    protocol: 'Cloud API',
+    description: 'Nest cihazları, termostat ve bağlı prizleri içe aktar.',
+    color: Color(0xFF4285F4),
+    icon: Icons.home_outlined,
   ),
-  _Category(
-    title: 'Akıllı Işık',
-    platforms: [
-      _Platform(
-        id: 'Philips Hue',
-        name: 'Philips Hue',
-        protocol: 'Zigbee · Matter',
-        description: 'Ampul, şerit LED ve sahne gruplarını içe aktar.',
-        color: Color(0xFF0066CC),
-        icon: Icons.lightbulb_outlined,
-      ),
-      _Platform(
-        id: 'IKEA Trådfri',
-        name: 'IKEA Trådfri',
-        protocol: 'Zigbee · Matter',
-        description: 'IKEA akıllı ampul ve sensörlerini içe aktar.',
-        color: Color(0xFF003E6B),
-        icon: Icons.emoji_objects_outlined,
-      ),
-    ],
+  _Platform(
+    id: 'Apple HomeKit',
+    name: 'Apple HomeKit',
+    protocol: 'HomeKit',
+    description: 'HomeKit aksesuarlarını ve sahneleri içe aktar.',
+    color: Color(0xFF555555),
+    icon: Icons.phone_iphone_outlined,
   ),
-  _Category(
-    title: 'Genel IoT',
-    platforms: [
-      _Platform(
-        id: 'Tuya / Smart Life',
-        name: 'Tuya / Smart Life',
-        protocol: 'Wi-Fi · Tuya Cloud',
-        description: 'Geniş marka yelpazesindeki Wi-Fi cihazlarını içe aktar.',
-        color: Color(0xFF1F6BFF),
-        icon: Icons.device_hub_outlined,
-      ),
-      _Platform(
-        id: 'SmartThings',
-        name: 'Samsung SmartThings',
-        protocol: 'Matter · Cloud API',
-        description: 'SmartThings hub ve bağlı sensörleri içe aktar.',
-        color: Color(0xFF1428A0),
-        icon: Icons.hub_outlined,
-      ),
-    ],
+  _Platform(
+    id: 'Siemens KNX',
+    name: 'Siemens KNX',
+    protocol: 'KNX / IP',
+    description: 'Bina otomasyonu — ışık, ısıtma ve aktüatörleri bağla.',
+    color: Color(0xFF009999),
+    icon: Icons.settings_input_component_outlined,
+  ),
+  _Platform(
+    id: 'Bosch Smart Home',
+    name: 'Bosch Smart Home',
+    protocol: 'Cloud API',
+    description: 'Kontak, hareket ve pencere sensörlerini içe aktar.',
+    color: Color(0xFF00479B),
+    icon: Icons.sensors_outlined,
+  ),
+  _Platform(
+    id: 'Philips Hue',
+    name: 'Philips Hue',
+    protocol: 'Zigbee · Matter',
+    description: 'Ampul, şerit LED ve sahne gruplarını içe aktar.',
+    color: Color(0xFF0066CC),
+    icon: Icons.lightbulb_outlined,
+  ),
+  _Platform(
+    id: 'SmartThings',
+    name: 'Samsung SmartThings',
+    protocol: 'Cloud API',
+    description: 'SmartThings hub ve bağlı sensörleri içe aktar.',
+    color: Color(0xFF1428A0),
+    icon: Icons.hub_outlined,
   ),
 ];
 
@@ -157,29 +107,6 @@ class EcosystemScreen extends StatelessWidget {
           style: AppTextStyles.secondary,
         ),
         const SizedBox(height: AppSpacing.xxl),
-        for (final category in _categories) ...[
-          _CategorySection(category: category),
-          const SizedBox(height: AppSpacing.xl),
-        ],
-      ],
-    );
-  }
-}
-
-// ── Category section ──────────────────────────────────────────────────────────
-
-class _CategorySection extends StatelessWidget {
-  const _CategorySection({required this.category});
-
-  final _Category category;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(category.title, style: AppTextStyles.section),
-        const SizedBox(height: AppSpacing.md),
         Container(
           decoration: BoxDecoration(
             color: AppColors.background,
@@ -189,10 +116,10 @@ class _CategorySection extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: Column(
             children: [
-              for (var i = 0; i < category.platforms.length; i++) ...[
+              for (var i = 0; i < _platforms.length; i++) ...[
                 if (i > 0)
                   const Divider(height: 1, indent: AppSpacing.lg, endIndent: AppSpacing.lg),
-                _PlatformRow(platform: category.platforms[i]),
+                _PlatformRow(platform: _platforms[i]),
               ],
             ],
           ),
