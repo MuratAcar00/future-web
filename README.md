@@ -1,7 +1,5 @@
 # Sessiz Komşu
 
-![Sessiz Komşu uygulama simgesi](web/icons/Icon-192.png)
-
 **Yaşlı bireylerin günlük rutinini destekleyen, gizliliği önceleyen Flutter Web prototipi.** Aile paneli simüle sensör hareketlerini ve rutin durumunu gösterir; cihaz ekranı ise büyük saat ve gerektiğinde tek dokunuşla **İYİYİM** onayı sunar.
 
 > [!IMPORTANT]
