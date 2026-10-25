@@ -31,7 +31,7 @@ class OnboardingScreen extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 720),
               child: Column(
                 children: [
-                  const LogoMark(size: 48),
+                  const LogoMark.tile(size: 56),
                   const SizedBox(height: AppSpacing.xl),
                   Semantics(
                     header: true,
@@ -140,6 +140,9 @@ class _ModeOption extends StatelessWidget {
     return HoverSurface(
       onTap: () => context.read<AppModeProvider>().selectMode(mode),
       border: Border.all(color: AppColors.border),
+      hoverBorderColor: AppColors.primaryBorder,
+      hoverColor: AppColors.surfaceSecondary,
+      pressedColor: AppColors.simulator,
       borderRadius: AppRadius.lg,
       padding: const EdgeInsets.all(AppSpacing.xl),
       child: Column(
@@ -153,10 +156,11 @@ class _ModeOption extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.border),
+                  color: AppColors.primarySurface,
+                  border: Border.all(color: AppColors.primaryBorder),
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
-                child: Icon(icon, color: AppColors.text),
+                child: Icon(icon, color: AppColors.primary),
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(
@@ -174,9 +178,9 @@ class _ModeOption extends StatelessWidget {
             padding: EdgeInsets.only(top: AppSpacing.lg),
             child: Row(
               children: [
-                Text('Devam et', style: AppTextStyles.bodyStrong),
+                Text('Devam et', style: AppTextStyles.link),
                 SizedBox(width: AppSpacing.xs),
-                Icon(Icons.arrow_forward, size: 16, color: AppColors.text),
+                Icon(Icons.arrow_forward, size: 16, color: AppColors.primary),
               ],
             ),
           ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/widgets/logo_mark.dart';
 import '../../../core/widgets/status_dot.dart';
 import '../../../core/widgets/tag_chip.dart';
 import '../../../providers/clock_provider.dart';
@@ -21,10 +23,16 @@ class FamilyHeader extends StatelessWidget {
     final demoTime = context.select<ClockProvider, bool>(
       (c) => c.isDemoTimeActive,
     );
+    // Phones have no sidebar, so the brand lockup leads the page instead.
+    final showLockup = MediaQuery.sizeOf(context).width < AppBreakpoints.mobile;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (showLockup) ...[
+          const LogoLockup(markSize: 22, fontSize: 15),
+          const SizedBox(height: AppSpacing.xl),
+        ],
         Semantics(
           header: true,
           child: Text(AppStrings.homeName, style: familyTitleStyle(context)),

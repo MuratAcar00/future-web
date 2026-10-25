@@ -4,8 +4,8 @@
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FFFFFF",
-    "theme_color": "#000000",
-    "description": "Sessiz Komşu - simüle edilmiş rutin takibi",
+    "theme_color": "#0F766E",
+    "description": "Sessiz Komşu — sevdiklerinizin günlük rutinini sessizce takip eden demo",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

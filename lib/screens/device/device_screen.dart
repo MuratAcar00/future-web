@@ -8,6 +8,7 @@ import '../../core/constants/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/utils/motion.dart';
+import '../../core/widgets/logo_mark.dart';
 import '../../models/routine_status.dart';
 import '../../providers/app_mode_provider.dart';
 import '../../providers/clock_provider.dart';
@@ -138,23 +139,37 @@ class _DeviceTopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
-      child: Row(
+      child: Stack(
+        alignment: Alignment.center,
         children: [
-          IconButton(
-            tooltip: AppStrings.backToModeSelection,
-            onPressed: () =>
-                context.read<AppModeProvider>().returnToModeSelection(),
-            icon: Icon(Icons.arrow_back, color: foreground),
-          ),
-          const Spacer(),
-          Tooltip(
-            message: 'Bu ekrandaki uyarılar simüle edilen verilere dayanır.',
-            child: Text(
-              'Demo · simüle veri',
-              style: TextStyle(fontSize: 12, color: foreground),
+          // Subtle brand presence, centered independently of the side items.
+          const ExcludeSemantics(
+            child: LogoMark(
+              size: 20,
+              color: AppColors.deviceSubtle,
+              accent: AppColors.primaryOnDark,
             ),
           ),
-          const SizedBox(width: AppSpacing.sm),
+          Row(
+            children: [
+              IconButton(
+                tooltip: AppStrings.backToModeSelection,
+                onPressed: () =>
+                    context.read<AppModeProvider>().returnToModeSelection(),
+                icon: Icon(Icons.arrow_back, color: foreground),
+              ),
+              const Spacer(),
+              Tooltip(
+                message:
+                    'Bu ekrandaki uyarılar simüle edilen verilere dayanır.',
+                child: Text(
+                  'Demo · simüle veri',
+                  style: TextStyle(fontSize: 12, color: foreground),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+            ],
+          ),
         ],
       ),
     );
@@ -223,8 +238,8 @@ class _ConfirmationPromptState extends State<_ConfirmationPrompt>
               autofocus: true,
               onTap: _submitted ? null : _confirm,
               splashFactory: NoSplash.splashFactory,
-              hoverColor: const Color(0x14FFFFFF),
-              focusColor: const Color(0x1FFFFFFF),
+              hoverColor: AppColors.deviceOverlayHover,
+              focusColor: AppColors.deviceOverlayFocus,
               child: Center(
                 child: ScaleTransition(
                   scale: _scale,
