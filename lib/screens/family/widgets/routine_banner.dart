@@ -10,8 +10,7 @@ import '../../../core/utils/motion.dart';
 import '../../../models/routine_status.dart';
 import '../../../providers/routine_provider.dart';
 
-/// Large status message for the morning routine. Keeps a stable minimum
-/// height so the feed below does not jump between states.
+/// Large status card for the morning routine.
 class RoutineBanner extends StatelessWidget {
   const RoutineBanner({super.key});
 
@@ -31,13 +30,11 @@ class RoutineBanner extends StatelessWidget {
         child: AnimatedContainer(
           duration: context.motion(AppDurations.state),
           curve: Curves.easeInOut,
-          constraints: const BoxConstraints(
-            minHeight: AppLayout.bannerMinHeight,
-          ),
+          constraints: const BoxConstraints(minHeight: AppLayout.bannerMinHeight),
           padding: EdgeInsets.all(compact ? AppSpacing.xl : AppSpacing.xxl),
           decoration: BoxDecoration(
             color: look.background,
-            border: Border.all(color: look.border),
+            border: Border.all(color: look.border, width: look.isAlert ? 1.5 : 1),
             borderRadius: BorderRadius.circular(AppRadius.lg),
           ),
           child: AnimatedSwitcher(
@@ -46,38 +43,11 @@ class RoutineBanner extends StatelessWidget {
               alignment: Alignment.topLeft,
               children: [...previous, ?current],
             ),
-            child: Column(
+            child: _BannerContent(
               key: ValueKey(look.key),
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(look.icon, size: 16, color: look.accent),
-                    const SizedBox(width: AppSpacing.sm),
-                    Flexible(
-                      child: Text(
-                        look.label,
-                        style: AppTextStyles.micro.copyWith(color: look.accent),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Text(
-                  look.message,
-                  style: TextStyle(
-                    fontSize: compact ? 26 : 34,
-                    fontWeight: FontWeight.w600,
-                    height: 1.2,
-                    letterSpacing: -0.6,
-                    color: look.messageColor,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Text(evaluation.reason, style: AppTextStyles.secondary),
-              ],
+              look: look,
+              reason: evaluation.reason,
+              compact: compact,
             ),
           ),
         ),
@@ -85,6 +55,91 @@ class RoutineBanner extends StatelessWidget {
     );
   }
 }
+
+class _BannerContent extends StatelessWidget {
+  const _BannerContent({
+    super.key,
+    required this.look,
+    required this.reason,
+    required this.compact,
+  });
+
+  final _BannerLook look;
+  final String reason;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Icon circle
+        Container(
+          width: compact ? 44 : 52,
+          height: compact ? 44 : 52,
+          decoration: BoxDecoration(
+            color: look.accent.withAlpha(look.isAlert ? 30 : 20),
+            shape: BoxShape.circle,
+            border: Border.all(color: look.accent.withAlpha(look.isAlert ? 80 : 50)),
+          ),
+          child: Icon(look.icon, color: look.accent, size: compact ? 20 : 24),
+        ),
+        const SizedBox(width: AppSpacing.lg),
+        // Text block
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Label pill
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: 2,
+                ),
+                decoration: BoxDecoration(
+                  color: look.accent.withAlpha(look.isAlert ? 25 : 15),
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                ),
+                child: Text(
+                  look.label,
+                  style: AppTextStyles.micro.copyWith(
+                    color: look.accent,
+                    letterSpacing: 0.8,
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              // Main message
+              Text(
+                look.message,
+                style: TextStyle(
+                  fontSize: compact ? 22 : 28,
+                  fontWeight: FontWeight.w700,
+                  height: 1.2,
+                  letterSpacing: -0.5,
+                  color: look.messageColor,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              // Reason / detail
+              Text(
+                reason,
+                style: AppTextStyles.secondary.copyWith(
+                  color: look.isAlert
+                      ? look.accent.withAlpha(180)
+                      : AppColors.muted,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Look factory ──────────────────────────────────────────────────────────────
 
 class _BannerLook {
   const _BannerLook({
@@ -96,6 +151,7 @@ class _BannerLook {
     required this.messageColor,
     required this.background,
     required this.border,
+    this.isAlert = false,
   });
 
   factory _BannerLook.of(RoutineEvaluation evaluation) {
@@ -106,33 +162,35 @@ class _BannerLook {
           key: active ? 'normal' : 'waiting',
           label: active ? 'DURUM NORMAL' : 'SABAH RUTİNİ BEKLENİYOR',
           message: active ? AppStrings.bannerNormal : AppStrings.bannerWaiting,
-          icon: active ? Icons.check_circle_outline : Icons.schedule,
+          icon: active ? Icons.check_circle_outline : Icons.schedule_outlined,
           accent: active ? AppColors.success : AppColors.muted,
-          messageColor: AppColors.text,
+          messageColor: AppColors.heading,
           background: AppColors.background,
           border: AppColors.border,
         );
       case RoutineStatus.delayed:
         return const _BannerLook(
           key: 'delayed',
-          label: 'GECİKME',
+          label: 'GECİKME UYARISI',
           message: AppStrings.bannerDelayed,
           icon: Icons.warning_amber_rounded,
           accent: AppColors.alert,
           messageColor: AppColors.alert,
           background: AppColors.alertSurface,
           border: AppColors.alertBorder,
+          isAlert: true,
         );
       case RoutineStatus.awaitingConfirmation:
         return const _BannerLook(
           key: 'awaiting',
           label: 'UYARI · CİHAZDA ONAY BEKLENİYOR',
           message: AppStrings.bannerDelayed,
-          icon: Icons.warning_amber_rounded,
+          icon: Icons.notification_important_outlined,
           accent: AppColors.alert,
           messageColor: AppColors.alert,
           background: AppColors.alertSurface,
           border: AppColors.alertBorder,
+          isAlert: true,
         );
       case RoutineStatus.confirmedOkay:
         return const _BannerLook(
@@ -141,7 +199,7 @@ class _BannerLook {
           message: AppStrings.bannerConfirmed,
           icon: Icons.verified_outlined,
           accent: AppColors.success,
-          messageColor: AppColors.text,
+          messageColor: AppColors.heading,
           background: AppColors.successSurface,
           border: AppColors.successBorder,
         );
@@ -156,4 +214,5 @@ class _BannerLook {
   final Color messageColor;
   final Color background;
   final Color border;
+  final bool isAlert;
 }
