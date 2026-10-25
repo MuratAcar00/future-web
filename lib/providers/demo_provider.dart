@@ -4,6 +4,7 @@ import '../core/utils/date_time_format.dart';
 import '../models/sensor_type.dart';
 import '../services/demo_sensor_service.dart';
 import 'clock_provider.dart';
+import 'device_provider.dart';
 import 'routine_provider.dart';
 import 'sensor_provider.dart';
 
@@ -14,6 +15,7 @@ class DemoProvider extends ChangeNotifier {
     required this._clock,
     required this._sensors,
     required this._routine,
+    this._devices,
     this._service = const DemoSensorService(),
   });
 
@@ -21,6 +23,7 @@ class DemoProvider extends ChangeNotifier {
   final SensorProvider _sensors;
   final RoutineProvider _routine;
   final DemoSensorService _service;
+  final DeviceProvider? _devices;
 
   String? _lastAction;
 
@@ -86,6 +89,7 @@ class DemoProvider extends ChangeNotifier {
     _routine.batch(() {
       _clock.resetDemoTime();
       _sensors.reset(_clock.currentTime);
+      _devices?.reset();
       _routine.clearConfirmation();
     });
     _lastAction = null;

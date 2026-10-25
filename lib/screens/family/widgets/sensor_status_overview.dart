@@ -12,7 +12,9 @@ import '../../../models/sensor.dart';
 import '../../../models/sensor_type.dart';
 import '../../../providers/clock_provider.dart';
 import '../../../providers/demo_provider.dart';
+import '../../../providers/device_provider.dart';
 import '../../../providers/sensor_provider.dart';
+import 'device_management.dart';
 import 'family_page.dart';
 
 /// Plain list of the simulated sensors with their latest state.
@@ -21,16 +23,18 @@ class SensorStatusOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final devices = context.watch<DeviceProvider>().devices;
+    final sensorCaption = devices.isEmpty
+        ? '${SensorType.values.length} simüle sensör'
+        : '${SensorType.values.length + devices.length} simüle cihaz';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FamilySectionHeader(
-          title: 'Sensörler',
-          caption: '${SensorType.values.length} simüle sensör',
-        ),
+        FamilySectionHeader(title: 'Sensörler', caption: sensorCaption),
         FamilyCard(
           children: [
             for (final type in SensorType.values) _SensorRow(type: type),
+            for (final device in devices) ConnectedDeviceRow(device: device),
           ],
         ),
       ],

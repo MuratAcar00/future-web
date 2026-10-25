@@ -9,6 +9,7 @@ enum EventKind {
   bedroom('Yatak odası'),
   routineDelayed('Rutin'),
   confirmationRequested('Cihaz'),
+  deviceAdded('Cihaz'),
   confirmed('Onay'),
   demoScenario('Demo');
 

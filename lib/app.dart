@@ -10,6 +10,7 @@ import 'models/app_mode.dart';
 import 'providers/app_mode_provider.dart';
 import 'providers/clock_provider.dart';
 import 'providers/demo_provider.dart';
+import 'providers/device_provider.dart';
 import 'providers/presentation_provider.dart';
 import 'providers/routine_provider.dart';
 import 'providers/sensor_provider.dart';
@@ -55,6 +56,13 @@ class SessizKomsuApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           lazy: false,
+          create: (context) => DeviceProvider(
+            sensors: context.read<SensorProvider>(),
+            now: () => context.read<ClockProvider>().currentTime,
+          ),
+        ),
+        ChangeNotifierProvider(
+          lazy: false,
           create: (context) => RoutineProvider(
             clock: context.read<ClockProvider>(),
             sensors: context.read<SensorProvider>(),
@@ -66,6 +74,7 @@ class SessizKomsuApp extends StatelessWidget {
             clock: context.read<ClockProvider>(),
             sensors: context.read<SensorProvider>(),
             routine: context.read<RoutineProvider>(),
+            devices: context.read<DeviceProvider>(),
           ),
         ),
         ChangeNotifierProvider(

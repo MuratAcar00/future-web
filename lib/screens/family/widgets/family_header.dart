@@ -10,6 +10,7 @@ import '../../../core/widgets/logo_mark.dart';
 import '../../../core/widgets/status_dot.dart';
 import '../../../core/widgets/tag_chip.dart';
 import '../../../providers/clock_provider.dart';
+import 'device_management.dart';
 import 'family_page.dart';
 
 /// Home title, honest live-demo label and the current (demo) time.
@@ -63,6 +64,11 @@ class FamilyHeader extends StatelessWidget {
                   background: AppColors.simulator,
                 ),
               ),
+            OutlinedButton.icon(
+              onPressed: () => showDeviceAddMenu(context),
+              icon: const Icon(Icons.add, size: 18),
+              label: const Text('Cihaz ekle'),
+            ),
           ],
         ),
       ],

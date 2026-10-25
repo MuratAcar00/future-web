@@ -9,6 +9,7 @@ import '../../../core/widgets/reset_demo_dialog.dart';
 import '../../../models/app_mode.dart';
 import '../../../providers/app_mode_provider.dart';
 import '../../../providers/routine_provider.dart';
+import '../widgets/device_management.dart';
 import '../widgets/family_page.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -92,6 +93,8 @@ class SettingsScreen extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: AppSpacing.xxl),
+        const DeviceManagementSection(),
         const SizedBox(height: AppSpacing.xxl),
         const FamilySectionHeader(title: 'Demo verileri'),
         FamilyCard(
