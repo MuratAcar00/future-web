@@ -55,6 +55,7 @@ class _DemoPanelState extends State<DemoPanel> {
         HoverSurface(
           borderRadius: AppRadius.lg,
           hoverColor: AppColors.border,
+          pressedColor: AppColors.borderStrong,
           semanticLabel: _expanded
               ? 'Demo kontrollerini gizle'
               : 'Demo kontrollerini göster',

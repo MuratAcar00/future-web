@@ -89,7 +89,7 @@ class FamilySidebar extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xl),
                   const Tooltip(
                     message: AppStrings.appName,
-                    child: LogoMark(size: 28),
+                    child: LogoMark.tile(size: 32),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
                   for (final entry in _sections)
@@ -129,7 +129,7 @@ class _SidebarButton extends StatelessWidget {
             width: 3,
             height: 20,
             decoration: BoxDecoration(
-              color: selected ? AppColors.heading : Colors.transparent,
+              color: selected ? AppColors.primary : Colors.transparent,
               borderRadius: const BorderRadius.horizontal(
                 right: Radius.circular(AppRadius.sm),
               ),
@@ -140,14 +140,17 @@ class _SidebarButton extends StatelessWidget {
             tooltip: entry.tooltip,
             semanticLabel: entry.label,
             selected: selected,
-            color: selected ? AppColors.simulator : Colors.transparent,
+            color: selected ? AppColors.primarySurface : Colors.transparent,
+            hoverColor: selected
+                ? AppColors.primarySurface
+                : AppColors.simulator,
             onTap: () => entry.onSelected(context.read<AppModeProvider>()),
             child: SizedBox(
               width: 44,
               height: 44,
               child: Icon(
                 entry.icon,
-                color: selected ? AppColors.heading : AppColors.muted,
+                color: selected ? AppColors.primary : AppColors.muted,
               ),
             ),
           ),
@@ -205,7 +208,7 @@ class _BottomNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppColors.heading : AppColors.muted;
+    final color = selected ? AppColors.primary : AppColors.muted;
     return HoverSurface(
       tooltip: entry.tooltip,
       semanticLabel: entry.label,

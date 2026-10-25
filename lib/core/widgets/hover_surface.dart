@@ -5,7 +5,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../utils/motion.dart';
 
-/// Flat interactive surface: hover background, keyboard focus ring,
+/// Flat interactive surface: hover/pressed background, keyboard focus ring,
 /// pointer cursor, Enter/Space activation and button semantics.
 class HoverSurface extends StatefulWidget {
   const HoverSurface({
@@ -13,9 +13,11 @@ class HoverSurface extends StatefulWidget {
     required this.child,
     this.onTap,
     this.color = Colors.transparent,
-    this.hoverColor = AppColors.surfaceSecondary,
+    this.hoverColor = AppColors.simulator,
+    this.pressedColor = AppColors.border,
     this.borderRadius = AppRadius.md,
     this.border,
+    this.hoverBorderColor,
     this.padding,
     this.semanticLabel,
     this.tooltip,
@@ -27,8 +29,12 @@ class HoverSurface extends StatefulWidget {
   final VoidCallback? onTap;
   final Color color;
   final Color hoverColor;
+  final Color pressedColor;
   final double borderRadius;
   final BoxBorder? border;
+
+  /// Replaces the color of a uniform [border] while hovered.
+  final Color? hoverBorderColor;
   final EdgeInsetsGeometry? padding;
   final String? semanticLabel;
   final String? tooltip;
@@ -42,11 +48,16 @@ class HoverSurface extends StatefulWidget {
 class _HoverSurfaceState extends State<HoverSurface> {
   bool _hovered = false;
   bool _focused = false;
+  bool _pressed = false;
 
   @override
   Widget build(BuildContext context) {
     final enabled = widget.onTap != null;
     final radius = BorderRadius.circular(widget.borderRadius);
+    final hoverBorder = widget.hoverBorderColor;
+    final border = widget.border;
+    final showHoverBorder =
+        enabled && _hovered && hoverBorder != null && border is Border;
     final showFocus =
         _focused &&
         FocusManager.instance.highlightMode == FocusHighlightMode.traditional;
@@ -56,9 +67,17 @@ class _HoverSurfaceState extends State<HoverSurface> {
       curve: Curves.easeOut,
       padding: widget.padding,
       decoration: BoxDecoration(
-        color: enabled && _hovered ? widget.hoverColor : widget.color,
+        color: !enabled
+            ? widget.color
+            : _pressed
+            ? widget.pressedColor
+            : _hovered
+            ? widget.hoverColor
+            : widget.color,
         borderRadius: radius,
-        border: widget.border,
+        border: showHoverBorder
+            ? Border.all(color: hoverBorder, width: border.top.width)
+            : border,
       ),
       foregroundDecoration: showFocus
           ? BoxDecoration(
@@ -83,6 +102,7 @@ class _HoverSurfaceState extends State<HoverSurface> {
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onHover: (value) => setState(() => _hovered = value),
+        onHighlightChanged: (value) => setState(() => _pressed = value),
         onFocusChange: (value) => setState(() => _focused = value),
         child: result,
       ),
