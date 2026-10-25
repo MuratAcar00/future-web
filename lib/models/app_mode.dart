@@ -13,4 +13,4 @@ enum AppMode {
 }
 
 /// Sections reachable from the family dashboard navigation.
-enum FamilySection { home, settings, profile }
+enum FamilySection { home, ecosystems, settings, profile }

@@ -9,6 +9,7 @@ import '../../models/app_mode.dart';
 import '../../models/presentation_step.dart';
 import '../../providers/app_mode_provider.dart';
 import '../presentation/presentation_highlight.dart';
+import 'ecosystems/ecosystem_screen.dart';
 import 'profile/profile_screen.dart';
 import 'settings/settings_screen.dart';
 import 'widgets/activity_timeline.dart';
@@ -52,6 +53,7 @@ class FamilyDashboard extends StatelessWidget {
                   inlineDemoPanel: showDemoPanel && !isDesktop,
                   demoPanelExpanded: !isMobile,
                 ),
+                FamilySection.ecosystems => const EcosystemScreen(),
                 FamilySection.settings => const SettingsScreen(),
                 FamilySection.profile => const ProfileScreen(),
               },

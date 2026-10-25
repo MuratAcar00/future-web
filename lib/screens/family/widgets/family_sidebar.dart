@@ -38,6 +38,13 @@ final _sections = [
     onSelected: (p) => p.selectSection(FamilySection.home),
   ),
   _NavEntry(
+    icon: Icons.hub_outlined,
+    label: 'Ekosistem',
+    tooltip: 'Ekosistemler — platform bağlantıları',
+    section: FamilySection.ecosystems,
+    onSelected: (p) => p.selectSection(FamilySection.ecosystems),
+  ),
+  _NavEntry(
     icon: Icons.tune,
     label: 'Ayarlar',
     tooltip: 'Ayarlar — görünüm ve demo tercihleri',
