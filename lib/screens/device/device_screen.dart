@@ -168,7 +168,7 @@ class _AmbientGlow extends StatelessWidget {
             center: Alignment.center,
             radius: 0.85,
             colors: [
-              const Color(0xFF0F766E).withAlpha(18), // subtle teal center
+              const Color(0xFF0F766E).withValues(alpha: 18 / 255.0), // subtle teal center
               Colors.transparent,
             ],
           ),
@@ -189,9 +189,9 @@ class _ConfirmedBadge extends StatelessWidget {
         vertical: AppSpacing.md,
       ),
       decoration: BoxDecoration(
-        color: AppColors.success.withAlpha(20),
+        color: AppColors.success.withValues(alpha: 20 / 255.0),
         borderRadius: BorderRadius.circular(AppRadius.pill),
-        border: Border.all(color: AppColors.success.withAlpha(60)),
+        border: Border.all(color: AppColors.success.withValues(alpha: 60 / 255.0)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -221,9 +221,9 @@ class _DelayedBadge extends StatelessWidget {
         vertical: AppSpacing.md,
       ),
       decoration: BoxDecoration(
-        color: AppColors.alert.withAlpha(20),
+        color: AppColors.alert.withValues(alpha: 20 / 255.0),
         borderRadius: BorderRadius.circular(AppRadius.pill),
-        border: Border.all(color: AppColors.alert.withAlpha(60)),
+        border: Border.all(color: AppColors.alert.withValues(alpha: 60 / 255.0)),
       ),
       child: const Row(
         mainAxisSize: MainAxisSize.min,
@@ -293,7 +293,7 @@ class _SensorDot extends StatelessWidget {
             icon,
             size: 16,
             color: isOnline
-                ? AppColors.primaryOnDark.withAlpha(180)
+                ? AppColors.primaryOnDark.withValues(alpha: 180 / 255.0)
                 : AppColors.deviceSubtle,
           ),
           const SizedBox(height: 4),
@@ -301,7 +301,7 @@ class _SensorDot extends StatelessWidget {
             width: 4,
             height: 4,
             decoration: BoxDecoration(
-              color: isOnline ? AppColors.primaryOnDark.withAlpha(180) : AppColors.deviceSubtle,
+              color: isOnline ? AppColors.primaryOnDark.withValues(alpha: 180 / 255.0) : AppColors.deviceSubtle,
               shape: BoxShape.circle,
             ),
           ),
@@ -491,7 +491,7 @@ class _ConfirmationPromptState extends State<_ConfirmationPrompt>
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: (width * 0.022).clamp(15.0, 22.0),
-                                color: AppColors.deviceText.withAlpha(200),
+                                color: AppColors.deviceText.withValues(alpha: 200 / 255.0),
                                 fontWeight: FontWeight.w300,
                                 letterSpacing: 0.2,
                               ),

@@ -78,9 +78,9 @@ class _BannerContent extends StatelessWidget {
           width: compact ? 44 : 52,
           height: compact ? 44 : 52,
           decoration: BoxDecoration(
-            color: look.accent.withAlpha(look.isAlert ? 30 : 20),
+            color: look.accent.withValues(alpha: (look.isAlert ? 30 : 20) / 255.0),
             shape: BoxShape.circle,
-            border: Border.all(color: look.accent.withAlpha(look.isAlert ? 80 : 50)),
+            border: Border.all(color: look.accent.withValues(alpha: (look.isAlert ? 80 : 50) / 255.0)),
           ),
           child: Icon(look.icon, color: look.accent, size: compact ? 20 : 24),
         ),
@@ -98,7 +98,7 @@ class _BannerContent extends StatelessWidget {
                   vertical: 2,
                 ),
                 decoration: BoxDecoration(
-                  color: look.accent.withAlpha(look.isAlert ? 25 : 15),
+                  color: look.accent.withValues(alpha: (look.isAlert ? 25 : 15) / 255.0),
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: Text(
@@ -127,7 +127,7 @@ class _BannerContent extends StatelessWidget {
                 reason,
                 style: AppTextStyles.secondary.copyWith(
                   color: look.isAlert
-                      ? look.accent.withAlpha(180)
+                      ? look.accent.withValues(alpha: 180 / 255.0)
                       : AppColors.muted,
                 ),
               ),

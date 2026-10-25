@@ -320,9 +320,9 @@ class _ModeOption extends StatelessWidget {
                 width: 52,
                 height: 52,
                 decoration: BoxDecoration(
-                  color: accentColor.withAlpha(dark ? 30 : 18),
+                  color: accentColor.withValues(alpha: (dark ? 30 : 18) / 255.0),
                   borderRadius: BorderRadius.circular(AppRadius.md),
-                  border: Border.all(color: accentColor.withAlpha(50)),
+                  border: Border.all(color: accentColor.withValues(alpha: 50 / 255.0)),
                 ),
                 child: Icon(icon, color: accentColor, size: 26),
               ),

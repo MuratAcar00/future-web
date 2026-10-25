@@ -266,7 +266,7 @@ class _PlatformCard extends StatelessWidget {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: platform.color.withAlpha(20),
+                    color: platform.color.withValues(alpha: 20 / 255.0),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Icon(platform.icon, color: platform.color, size: 20),
@@ -431,10 +431,12 @@ class _OAuthDialogState extends State<_OAuthDialog> {
   @override
   void initState() {
     super.initState();
+    final deviceProvider = context.read<DeviceProvider>();
+    final platformId = widget.platform.id;
     // Simulate OAuth round-trip: 2.2 s to connect, then show result
     Future.delayed(const Duration(milliseconds: 2200), () {
       if (!mounted) return;
-      context.read<DeviceProvider>().linkAccount(widget.platform.id);
+      deviceProvider.linkAccount(platformId);
       setState(() => _step = _OAuthStep.done);
     });
   }
@@ -450,7 +452,7 @@ class _OAuthDialogState extends State<_OAuthDialog> {
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: widget.platform.color.withAlpha(20),
+              color: widget.platform.color.withValues(alpha: 20 / 255.0),
               borderRadius: BorderRadius.circular(AppRadius.sm),
             ),
             child: Icon(
