@@ -64,7 +64,7 @@ class FamilyHeader extends StatelessWidget {
                   background: AppColors.simulator,
                 ),
               ),
-            OutlinedButton.icon(
+            FilledButton.icon(
               onPressed: () => showDeviceAddMenu(context),
               icon: const Icon(Icons.add, size: 18),
               label: const Text('Cihaz ekle'),
