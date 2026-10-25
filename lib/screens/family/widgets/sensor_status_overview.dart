@@ -336,36 +336,3 @@ class _DetailRow extends StatelessWidget {
   }
 }
 
-// ── ConnectedDeviceRow — kept for settings screen compatibility ───────────────
-
-class ConnectedDeviceRow extends StatelessWidget {
-  const ConnectedDeviceRow({super.key, required this.device});
-
-  final ConnectedDevice device;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(
-      horizontal: AppSpacing.lg,
-      vertical: AppSpacing.md,
-    ),
-    child: Row(
-      children: [
-        const Icon(Icons.sensors_outlined, color: AppColors.success),
-        const SizedBox(width: AppSpacing.md),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(device.name, style: AppTextStyles.bodyStrong),
-              Text(
-                '${device.room} · ${device.connectionLabel} · simüle',
-                style: AppTextStyles.secondary,
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
