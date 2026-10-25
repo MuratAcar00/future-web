@@ -10,11 +10,13 @@ import 'models/app_mode.dart';
 import 'providers/app_mode_provider.dart';
 import 'providers/clock_provider.dart';
 import 'providers/demo_provider.dart';
+import 'providers/presentation_provider.dart';
 import 'providers/routine_provider.dart';
 import 'providers/sensor_provider.dart';
 import 'screens/device/device_screen.dart';
 import 'screens/family/family_dashboard.dart';
 import 'screens/onboarding/onboarding_screen.dart';
+import 'screens/presentation/presentation_layer.dart';
 
 class SessizKomsuApp extends StatelessWidget {
   const SessizKomsuApp({
@@ -66,11 +68,20 @@ class SessizKomsuApp extends StatelessWidget {
             routine: context.read<RoutineProvider>(),
           ),
         ),
+        ChangeNotifierProvider(
+          create: (context) => PresentationProvider(
+            appMode: context.read<AppModeProvider>(),
+            clock: context.read<ClockProvider>(),
+            demo: context.read<DemoProvider>(),
+            routine: context.read<RoutineProvider>(),
+          ),
+        ),
       ],
       child: MaterialApp(
         title: AppStrings.appName,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
+        builder: (context, child) => PresentationLayer(child: child!),
         home: const _ModeSwitcher(),
       ),
     );

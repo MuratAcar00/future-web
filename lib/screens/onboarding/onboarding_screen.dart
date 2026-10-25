@@ -9,6 +9,7 @@ import '../../core/widgets/hover_surface.dart';
 import '../../core/widgets/logo_mark.dart';
 import '../../models/app_mode.dart';
 import '../../providers/app_mode_provider.dart';
+import '../presentation/presentation_layer.dart';
 
 /// First screen: asks who will use the system.
 class OnboardingScreen extends StatelessWidget {
@@ -103,6 +104,8 @@ class OnboardingScreen extends StatelessWidget {
                       );
                     },
                   ),
+                  const SizedBox(height: AppSpacing.xl),
+                  const StartPresentationButton(),
                   const SizedBox(height: AppSpacing.xxl),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 520),

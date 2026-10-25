@@ -1,6 +1,10 @@
 /// User-facing copy that is shared between several widgets.
 abstract final class AppStrings {
   static const appName = 'Sessiz Komşu';
+  static const presentationStart = 'Sunum Modunu Başlat';
+  static const presentationTooltip =
+      'Jüri sunumu: demoyu sıfırlar ve uygulamayı adım adım otomatik '
+      'gösterir. Veriler simüledir.';
   static const residentName = 'Ayşe Hanım';
   static const residentInitials = 'AH';
   static const homeName = "Ayşe Hanım'ın Evi";
