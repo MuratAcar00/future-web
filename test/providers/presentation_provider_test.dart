@@ -101,7 +101,12 @@ void main() {
             .reversed
             .map((e) => e.kind)
             .toList();
-        expect(morning, [EventKind.bedroom, EventKind.kitchen, EventKind.door]);
+        expect(morning, [
+          EventKind.kitchen,
+          EventKind.fridge,
+          EventKind.door,
+          EventKind.livingRoomLight,
+        ]);
         expect(h.routine.evaluation.hasActivityToday, isTrue);
         async.elapse(const Duration(milliseconds: 1));
 

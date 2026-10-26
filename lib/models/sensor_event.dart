@@ -6,7 +6,8 @@ import 'sensor_type.dart';
 enum EventKind {
   kitchen('Mutfak'),
   door('Giriş'),
-  bedroom('Yatak odası'),
+  fridge('Buzdolabı'),
+  livingRoomLight('Salon'),
   routineDelayed('Rutin'),
   confirmationRequested('Cihaz'),
   deviceAdded('Cihaz'),
@@ -19,18 +20,23 @@ enum EventKind {
 
   /// Whether the event counts as daily-life activity for the routine engine.
   bool get isSensorActivity =>
-      this == kitchen || this == door || this == bedroom;
+      this == kitchen ||
+      this == door ||
+      this == fridge ||
+      this == livingRoomLight;
 
   static EventKind fromSensor(SensorType type) => switch (type) {
     SensorType.kitchen => kitchen,
     SensorType.entrance => door,
-    SensorType.bedroom => bedroom,
+    SensorType.fridge => fridge,
+    SensorType.livingRoomLight => livingRoomLight,
   };
 
   SensorType? get sensorType => switch (this) {
     kitchen => SensorType.kitchen,
     door => SensorType.entrance,
-    bedroom => SensorType.bedroom,
+    fridge => SensorType.fridge,
+    livingRoomLight => SensorType.livingRoomLight,
     _ => null,
   };
 }

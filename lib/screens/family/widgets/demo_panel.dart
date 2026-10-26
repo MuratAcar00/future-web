@@ -153,7 +153,7 @@ class _DemoPanelBody extends StatelessWidget {
         const _GroupLabel('SUNUM'),
         const StartPresentationButton(expand: true),
         const SizedBox(height: AppSpacing.xl),
-        const _GroupLabel('SENSÖR SİMÜLASYONU'),
+        const _GroupLabel('SİMÜLASYONDAKİ SİNYALLER'),
         _DemoButton(
           icon: Icons.kitchen_outlined,
           label: 'Mutfak Prizini Aç',
@@ -165,10 +165,17 @@ class _DemoPanelBody extends StatelessWidget {
           onTap: () => demo.triggerSensor(SensorType.entrance),
         ),
         _DemoButton(
-          icon: Icons.bed_outlined,
-          label: 'Yatak Odası Hareketi',
-          onTap: () => demo.triggerSensor(SensorType.bedroom),
+          icon: Icons.kitchen_outlined,
+          label: 'Buzdolabı Kapağını Aç',
+          onTap: () => demo.triggerSensor(SensorType.fridge),
         ),
+        _DemoButton(
+          icon: Icons.lightbulb_outline,
+          label: 'Salon Işığını Aç',
+          onTap: () => demo.triggerSensor(SensorType.livingRoomLight),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        const _SimulationDetails(),
         const SizedBox(height: AppSpacing.xl),
         const _GroupLabel('ZAMAN'),
         Padding(
@@ -213,6 +220,96 @@ class _DemoPanelBody extends StatelessWidget {
   }
 }
 
+class _SimulationDetails extends StatelessWidget {
+  const _SimulationDetails();
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.all(AppSpacing.md),
+    decoration: BoxDecoration(
+      color: AppColors.background,
+      border: Border.all(color: AppColors.border),
+      borderRadius: BorderRadius.circular(AppRadius.md),
+    ),
+    child: const Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text('Bu demo hangi verileri üretir?', style: AppTextStyles.bodyStrong),
+        SizedBox(height: AppSpacing.sm),
+        _SimulationDetailRow(
+          icon: Icons.power_outlined,
+          label: 'Mutfak prizi',
+          detail: 'Prizin açılma zamanı simüle edilir.',
+        ),
+        SizedBox(height: AppSpacing.xs),
+        _SimulationDetailRow(
+          icon: Icons.door_front_door_outlined,
+          label: 'Dış kapı',
+          detail: 'Yalnızca kapının açılma olayı kaydedilir.',
+        ),
+        SizedBox(height: AppSpacing.xs),
+        _SimulationDetailRow(
+          icon: Icons.kitchen_outlined,
+          label: 'Buzdolabı kapağı',
+          detail: 'Yalnızca kapağın açılma zamanı kaydedilir.',
+        ),
+        SizedBox(height: AppSpacing.xs),
+        _SimulationDetailRow(
+          icon: Icons.lightbulb_outline,
+          label: 'Salon ışığı',
+          detail: 'Yalnızca ışığın açılma zamanı kaydedilir.',
+        ),
+        SizedBox(height: AppSpacing.xs),
+        _SimulationDetailRow(
+          icon: Icons.schedule_outlined,
+          label: 'Rutin durumu',
+          detail: 'Saat ve bu dört sinyale göre hesaplanır.',
+        ),
+        Divider(height: AppSpacing.xl),
+        Text(
+          'Yatak odası hareketi izlenmez. Kamera, mikrofon ve konum kullanılmaz. Olaylar tarayıcı belleğinde simüle edilir.',
+          style: AppTextStyles.secondary,
+        ),
+      ],
+    ),
+  );
+}
+
+class _SimulationDetailRow extends StatelessWidget {
+  const _SimulationDetailRow({
+    required this.icon,
+    required this.label,
+    required this.detail,
+  });
+
+  final IconData icon;
+  final String label;
+  final String detail;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Icon(icon, size: 16, color: AppColors.muted),
+      const SizedBox(width: AppSpacing.sm),
+      Expanded(
+        child: Text.rich(
+          TextSpan(
+            style: AppTextStyles.secondary,
+            children: [
+              TextSpan(
+                text: '$label · ',
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+              TextSpan(text: detail),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 class _GroupLabel extends StatelessWidget {
   const _GroupLabel(this.text);
 
@@ -236,7 +333,7 @@ class _AlertActiveNotice extends StatelessWidget {
   Widget build(BuildContext context) {
     final text = status == RoutineStatus.awaitingConfirmation
         ? 'Uyarı aktif: cihaz ekranında İYİYİM onayı bekleniyor.'
-        : 'Gecikme algılandı: hareket olmazsa cihazdan onay istenecek.';
+        : 'Gecikme algılandı: aktivite olayı olmazsa cihazdan onay istenecek.';
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       padding: const EdgeInsets.all(AppSpacing.md),

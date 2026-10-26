@@ -1,4 +1,4 @@
-/// The three simulated sensors installed in the demo home.
+/// Privacy-conscious simulated signals used by the demo.
 enum SensorType {
   kitchen(
     id: 'kitchen-plug',
@@ -12,11 +12,17 @@ enum SensorType {
     location: 'Giriş',
     triggeredState: 'Kapı açıldı',
   ),
-  bedroom(
-    id: 'bedroom-motion',
-    name: 'Yatak Odası Hareket Sensörü',
-    location: 'Yatak odası',
-    triggeredState: 'Hareket algılandı',
+  fridge(
+    id: 'fridge-door',
+    name: 'Buzdolabı Kapı Sensörü',
+    location: 'Mutfak',
+    triggeredState: 'Kapak açıldı',
+  ),
+  livingRoomLight(
+    id: 'living-room-light',
+    name: 'Salon Işığı',
+    location: 'Salon',
+    triggeredState: 'Işık açıldı',
   );
 
   const SensorType({

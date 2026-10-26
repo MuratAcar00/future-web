@@ -84,7 +84,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             _ProfileRow(label: 'Bugünkü olaylar', value: '$todayCount'),
             _ProfileRow(
-              label: 'Son hareket',
+              label: 'Son aktivite',
               value: lastActivity == null
                   ? 'Henüz yok'
                   : '${lastActivity.kind.tagLabel} · '

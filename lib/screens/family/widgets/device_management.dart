@@ -939,7 +939,6 @@ class _DeviceActionRow extends StatelessWidget {
 }
 
 // ── Connected device row (used in settings device list) ──────────────────────
-
 class ConnectedDeviceRow extends StatelessWidget {
   const ConnectedDeviceRow({super.key, required this.device});
 

@@ -23,7 +23,10 @@ void main() {
         sensors.sensor(SensorType.kitchen).lastTriggered,
         DateTime(2026, 10, 24, 7, 30),
       );
-      expect(sensors.sensor(SensorType.entrance).lastTriggered, isNull);
+      expect(
+        sensors.sensor(SensorType.entrance).lastTriggered,
+        DateTime(2026, 10, 24, 7, 12),
+      );
     });
 
     test('never seeds events in the future (before 07:30)', () {
@@ -68,12 +71,10 @@ void main() {
 
       sensors
         ..trigger(SensorType.kitchen, fixedNow)
-        ..trigger(SensorType.bedroom, fixedNow)
         ..trigger(SensorType.entrance, fixedNow);
 
       expect(sensors.events.map((e) => e.kind), [
         EventKind.door,
-        EventKind.bedroom,
         EventKind.kitchen,
       ]);
     });
